@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เที่ยวไปชิมไป ปลายทาง — รีวิวที่เที่ยว ร้านอาหาร และที่พัก</title>
+<meta name="description" content="รวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง อ่านง่ายในที่เดียว พร้อมลิงก์กลับไปโพสต์ต้นทางทุกบทความ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0" defer></script>
+<style>
+:root{
+  --background:#F7F6F2;
+  --card:#FFFFFF;
+  --bg-accent:#E4F2EE;
+  --foreground:#0D2B3E;
+  --muted:#5C6B6F;
+  --border:#D8D3C4;
+  --primary:#0077B6;
+  --secondary:#2EC4A6;
+  --accent:#FFD23F;
+  --font-heading:'Kanit', sans-serif;
+  --font-body:'Sarabun', sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--background);
+  color:var(--foreground);
+  font-family:var(--font-body);
+  line-height:1.8;
+  word-break:break-word;
+  overflow-wrap:break-word;
+  overflow-x:hidden;
+  font-size:16px;
+}
+h1,h2,h3,h4{
+  font-family:var(--font-heading);
+  line-height:1.5;
+  margin:0;
+  font-weight:800;
+}
+p{margin:0;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;height:auto;display:block;}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px;}
+
+/* riso grain overlay */
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.05;
+  background-image:radial-gradient(circle,#000 1px,transparent 1px);
+  background-size:3px 3px;
+  mix-blend-mode:multiply;
+}
+
+/* NAV */
+header{
+  position:sticky;top:0;z-index:100;
+  padding:16px 0;
+  transition:background .35s ease, box-shadow .35s ease, padding .35s ease;
+}
+header.scrolled{
+  background:rgba(247,246,242,.92);
+  backdrop-filter:blur(8px);
+  box-shadow:0 4px 20px rgba(13,43,62,.08);
+  padding:10px 0;
+}
+.navrow{display:flex;align-items:center;justify-content:space-between;}
+.logo{
+  font-family:var(--font-heading);
+  font-weight:900;
+  font-size:1.7rem;
+  color:var(--primary);
+  letter-spacing:0;
+  position:relative;
+  display:inline-block;
+}
+.logo::after{
+  content:"";
+  position:absolute;left:-4px;right:-6px;bottom:2px;height:.42em;
+  background:var(--accent);
+  z-index:-1;
+  transform:rotate(-1.5deg);
+  border-radius:3px;
+}
+/*
+  The lockup is a white knockout on transparency, and this header never leaves the bone
+  background — so the mark carries its own dark plate, cut like the rest of the stickers here.
+*/
+.logo-img{
+  height:46px;width:auto;display:block;
+  background:var(--foreground);
+  border:3px solid var(--foreground);
+  border-radius:14px;
+  padding:5px 10px;
+  box-shadow:4px 5px 0 var(--accent);
+}
+@media(max-width:520px){ .logo-img{height:34px;padding:4px 8px;} }
+nav.desktop-nav{display:none;}
+nav.desktop-nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;align-items:center;}
+nav.desktop-nav a{
+  font-weight:600;font-size:.98rem;padding:8px 4px;position:relative;
+}
+nav.desktop-nav a:hover{color:var(--primary);}
+.nav-actions{display:flex;align-items:center;gap:16px;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;justify-content:center;
+  font-family:var(--font-heading);
+  font-weight:700;
+  padding:.85em 1.6em;
+  border-radius:999px;
+  border:3px solid var(--foreground);
+  cursor:pointer;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+  min-height:44px;
+  font-size:1rem;
+}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:4px 5px 0 var(--foreground);}
+.btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 7px 0 var(--foreground);}
+.btn-accent{background:var(--accent);color:var(--foreground);border-color:var(--foreground);box-shadow:4px 5px 0 var(--foreground);}
+.btn-accent:hover{transform:translate(-2px,-2px);box-shadow:6px 7px 0 var(--foreground);}
+.btn-outline{background:transparent;color:var(--foreground);box-shadow:4px 5px 0 var(--border);}
+.btn-outline:hover{background:var(--foreground);color:#fff;}
+
+.lang-sw{
+
+  cursor:pointer;
+  display:flex;align-items:center;gap:5px;font-size:.8em;font-weight:600;
+  color:var(--foreground);padding:6px 4px;
+}
+
+.lang-sw:focus-visible{outline:2px solid currentColor; outline-offset:3px;}
+.lang-sw svg{stroke:var(--foreground);}
+
+.hamburger{
+  display:flex;flex-direction:column;justify-content:center;gap:5px;
+  width:44px;height:44px;background:none;border:none;cursor:pointer;padding:10px;
+}
+.hamburger span{display:block;width:22px;height:3px;background:var(--foreground);border-radius:2px;transition:.3s;}
+.hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+
+.mobile-menu{
+  position:fixed;top:0;right:0;height:100vh;width:78%;max-width:320px;
+  background:var(--card);z-index:200;
+  transform:translateX(100%);transition:transform .35s ease;
+  padding:90px 30px 30px;
+  box-shadow:-8px 0 30px rgba(13,43,62,.15);
+  overflow-y:auto;
+}
+.mobile-menu.open{transform:translateX(0);}
+.mobile-menu ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+.mobile-menu a{display:block;padding:14px 6px;font-weight:600;font-size:1.15rem;border-bottom:1px solid var(--border);}
+.menu-overlay{position:fixed;inset:0;background:rgba(13,43,62,.4);z-index:150;opacity:0;pointer-events:none;transition:opacity .3s;}
+.menu-overlay.open{opacity:1;pointer-events:auto;}
+
+/* HERO */
+.hero{
+  position:relative;
+  padding:50px 0 70px;
+  overflow:visible;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:28px;
+  align-items:center;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--bg-accent);color:var(--primary);
+  font-weight:700;font-size:.85rem;
+  padding:.6em 1.1em;border-radius:999px;
+  border:2px dashed var(--secondary);
+  margin-bottom:18px;
+}
+.hero h1{
+  font-size:2.5rem;
+  padding-top:.2em;
+  color:var(--foreground);
+}
+.hero h1 .hl{
+  color:var(--primary);
+  position:relative;
+}
+.hero-brush{
+  font-family:var(--font-heading);
+  font-style:italic;
+  font-weight:600;
+  color:var(--secondary);
+  display:inline-block;
+  transform:rotate(-3deg);
+}
+.hero p.lead{
+  margin-top:18px;
+  font-size:1.1rem;
+  color:var(--muted);
+  max-width:520px;
+}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px;}
+.hero-visual{
+  position:relative;
+  min-height:340px;
+}
+.hero-photo{
+  position:relative;
+  width:88%;
+  margin:0 auto;
+  border-radius:28px;
+  overflow:hidden;
+  border:5px solid var(--foreground);
+  transform:rotate(-3deg);
+  box-shadow:10px 12px 0 var(--accent);
+}
+.hero-photo img{
+  width:100%;height:280px;object-fit:cover;
+  transition:transform 8s ease;
+}
+.hero-photo:hover img{transform:scale(1.12);}
+.hero-badge{
+  position:absolute;top:-18px;right:6%;
+  background:var(--accent);
+  color:var(--foreground);
+  border:3px solid var(--foreground);
+  border-radius:50%;
+  width:92px;height:92px;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  font-family:var(--font-heading);
+  font-weight:800;
+  font-size:.8rem;
+  line-height:1.2;
+  transform:rotate(8deg);
+  box-shadow:4px 5px 0 var(--foreground);
+  z-index:5;
+}
+.hero-chip{
+  position:absolute;bottom:-14px;left:2%;
+  background:var(--card);
+  border:3px solid var(--foreground);
+  border-radius:16px;
+  padding:10px 16px;
+  display:flex;align-items:center;gap:8px;
+  font-weight:700;font-size:.85rem;
+  box-shadow:5px 6px 0 var(--secondary);
+  transform:rotate(2deg);
+}
+.hero-chip .stars{color:var(--accent);}
+
+/* SECTION HEADS */
+.section{padding:70px 0;}
+.section-head{margin-bottom:38px;max-width:680px;}
+.eyebrow{
+  font-family:var(--font-heading);
+  color:var(--secondary);
+  font-weight:700;
+  font-size:.85rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  display:block;margin-bottom:8px;
+}
+.section-head h2{font-size:1.9rem;padding-top:.15em;}
+.section-head p{color:var(--muted);margin-top:12px;font-size:1.02rem;}
+
+/* BENTO GRID */
+.bento{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:20px;
+}
+.tile{
+  position:relative;
+  background:var(--card);
+  border:3px solid var(--foreground);
+  border-radius:22px;
+  overflow:visible;
+  padding:0;
+  box-shadow:6px 7px 0 var(--border);
+  transition:transform .4s ease, box-shadow .4s ease;
+  opacity:0;
+  transform:translateY(30px);
+}
+.tile.in{opacity:1;transform:translateY(0);}
+.tile:hover{transform:translateY(-6px) rotate(-.6deg);box-shadow:8px 10px 0 var(--secondary);}
+.tile.rot-l{transform:translateY(30px) rotate(-1.6deg);}
+.tile.rot-l.in{transform:rotate(-1.6deg);}
+.tile.rot-l:hover{transform:translateY(-6px) rotate(-2.6deg);}
+.tile.rot-r{transform:translateY(30px) rotate(1.4deg);}
+.tile.rot-r.in{transform:rotate(1.4deg);}
+.tile.rot-r:hover{transform:translateY(-6px) rotate(2.2deg);}
+.tile-img{
+  width:100%;height:190px;object-fit:cover;
+  border-radius:19px 19px 0 0;
+  border-bottom:3px solid var(--foreground);
+}
+.tile-body{padding:20px 20px 22px;}
+.tile-cat{
+  display:inline-block;
+  font-size:.72rem;font-weight:700;
+  padding:.4em .9em;border-radius:999px;
+  margin-bottom:10px;
+}
+/* One chip colour per section in content/site.config.ts. */
+.cat-food{background:var(--accent);color:var(--foreground);}
+.cat-stay{background:var(--secondary);color:#fff;}
+.cat-trip{background:var(--primary);color:#fff;}
+.cat-domestic{background:var(--primary);color:#fff;}
+.cat-abroad{background:var(--foreground);color:#fff;}
+.cat-itinerary{background:var(--secondary);color:#fff;}
+.tile h3{font-size:1.15rem;color:var(--foreground);}
+.tile-rating{
+  font-family:var(--font-heading);
+  font-style:italic;
+  font-weight:600;
+  color:var(--primary);
+  font-size:1.05rem;
+  display:inline-flex;align-items:center;gap:6px;
+  transform:rotate(-2deg);
+  margin-top:10px;
+}
+.tile-rating svg{stroke:var(--accent);fill:var(--accent);}
+.tile p.desc{color:var(--muted);margin-top:8px;font-size:.95rem;}
+.tile-big{grid-column:1;}
+.tile-wide .tile-body{display:flex;flex-direction:column;}
+
+/*
+  Four tiles over two rows, one per article in the database. The eight-tile arrangement that
+  shipped with this design needed twice the articles the blog has, and filling it meant
+  inventing places; this covers 6 × 2 exactly, so no cell is left empty.
+*/
+@media(min-width:768px){
+  .bento{grid-template-columns:repeat(6,1fr);grid-auto-rows:1fr;}
+  .tile-a{grid-column:1/4;grid-row:1/3;}
+  .tile-b{grid-column:4/7;grid-row:1/2;}
+  .tile-c{grid-column:4/6;grid-row:2/3;}
+  .tile-d{grid-column:6/7;grid-row:2/3;}
+  /*
+    The two tiles that own a whole grid row lay themselves out as columns so the picture takes
+    whatever height is left after the text, rather than claiming 100% and pushing the body out
+    past the border. tile-d is the narrow one, and its article has the shortest title on the
+    board, so without this it was a tall card holding a date and a lot of nothing.
+  */
+  .tile-a, .tile-d{display:flex;flex-direction:column;}
+  .tile-a .tile-img{flex:1 1 auto;height:auto;min-height:260px;}
+  .tile-d .tile-img{flex:1 1 auto;height:auto;min-height:150px;}
+}
+
+/* ABOUT / STORY */
+.story{
+  background:var(--bg-accent);
+  position:relative;
+  padding:80px 0;
+  clip-path:polygon(0 3%,100% 0,100% 97%,0 100%);
+  margin-top:-30px;
+}
+.story-grid{display:grid;grid-template-columns:1fr;gap:36px;align-items:center;}
+.story-photo-wrap{position:relative;}
+.story-photo{
+  border-radius:28px;overflow:hidden;border:5px solid var(--foreground);
+  box-shadow:-10px 12px 0 var(--primary);
+}
+.story-photo img{width:100%;height:340px;object-fit:cover;}
+.story-sticker{
+  position:absolute;top:-16px;left:-16px;
+  background:var(--card);
+  border:3px solid var(--foreground);
+  border-radius:50%;
+  width:76px;height:76px;
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(-10deg);
+  box-shadow:3px 4px 0 var(--foreground);
+}
+.story-sticker svg{color:var(--primary);width:34px;height:34px;}
+.story-text h2{font-size:1.9rem;padding-top:.15em;color:var(--foreground);}
+.story-text p{color:var(--muted);margin-top:16px;font-size:1.02rem;}
+.story-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px;}
+.stat{
+  background:var(--card);
+  border:3px solid var(--foreground);
+  border-radius:16px;
+  padding:14px 10px;
+  text-align:center;
+  box-shadow:4px 5px 0 var(--accent);
+}
+.stat b{font-family:var(--font-heading);font-size:1.5rem;color:var(--primary);display:block;}
+.stat span{font-size:.78rem;color:var(--muted);font-weight:600;}
+
+/* PROCESS TIMELINE */
+.process{padding:80px 0;}
+.timeline{
+  position:relative;
+  margin-top:20px;
+  padding-left:36px;
+  border-left:4px dashed var(--secondary);
+}
+.step{
+  position:relative;
+  margin-bottom:44px;
+  opacity:0;transform:translateX(-20px);
+  transition:opacity .5s ease, transform .5s ease;
+}
+.step.in{opacity:1;transform:translateX(0);}
+.step:last-child{margin-bottom:0;}
+.step-num{
+  position:absolute;left:-56px;top:-6px;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-heading);font-weight:800;font-size:1.1rem;
+  border:3px solid var(--foreground);
+  box-shadow:3px 4px 0 var(--foreground);
+}
+.step:nth-child(2n) .step-num{background:var(--secondary);}
+.step:nth-child(3n) .step-num{background:var(--accent);color:var(--foreground);}
+.step-card{
+  background:var(--card);border:3px solid var(--foreground);border-radius:18px;
+  padding:20px 22px;box-shadow:5px 6px 0 var(--border);
+}
+.step-card h3{font-size:1.15rem;}
+.step-card p{color:var(--muted);margin-top:8px;}
+
+/* TESTIMONIALS */
+.testi{
+  background:var(--foreground);
+  color:var(--background);
+  padding:80px 0;
+  position:relative;
+  clip-path:polygon(0 4%,100% 0,100% 100%,0 96%);
+}
+.testi .section-head p{color:#B9C4CB;}
+.testi .eyebrow{color:var(--accent);}
+.testi-row{
+  display:grid;grid-template-columns:1fr;gap:20px;
+}
+/* Two places, so the band splits in half rather than leaving a third column empty. */
+@media(min-width:768px){ .testi-row.two{grid-template-columns:repeat(2,1fr);} }
+.tcard{
+  background:rgba(247,246,242,.06);
+  border:2px solid rgba(247,246,242,.25);
+  border-radius:20px;padding:22px;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .5s ease, transform .5s ease;
+}
+.tcard.in{opacity:1;transform:translateY(0);}
+.tcard .stars{color:var(--accent);display:flex;gap:3px;margin-bottom:12px;}
+.tcard p.quote{font-size:1rem;color:#EDEAE0;}
+.tcard .who{display:flex;align-items:center;gap:12px;margin-top:16px;}
+.tcard .who img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);}
+.tcard .who b{font-family:var(--font-heading);font-size:.95rem;}
+.tcard .who span{color:#9FB0B6;font-size:.8rem;}
+
+/* NEWSLETTER / CTA */
+.cta-block{padding:80px 0;}
+.cta-card{
+  background:var(--primary);
+  color:#fff;
+  border-radius:32px;
+  border:4px solid var(--foreground);
+  padding:44px 28px;
+  position:relative;
+  overflow:visible;
+  box-shadow:10px 12px 0 var(--secondary);
+}
+.cta-card h2{font-size:1.8rem;padding-top:.15em;}
+.cta-card p{margin-top:14px;color:#DCEEF7;max-width:480px;}
+.cta-form{
+  display:flex;flex-direction:column;gap:12px;margin-top:26px;max-width:420px;
+}
+.cta-form input{
+  padding:14px 18px;border-radius:999px;border:3px solid var(--foreground);
+  font-family:var(--font-body);font-size:1rem;min-height:44px;
+}
+.cta-card .btn-accent{align-self:flex-start;}
+.cta-blob{
+  position:absolute;top:-24px;right:6%;
+  background:var(--accent);color:var(--foreground);
+  border:3px solid var(--foreground);
+  border-radius:50%;width:80px;height:80px;
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(10deg);
+  font-family:var(--font-heading);font-weight:800;font-size:.75rem;text-align:center;
+  box-shadow:4px 5px 0 var(--foreground);
+}
+
+/* FOOTER */
+footer{
+  background:var(--bg-accent);
+  padding:60px 0 30px;
+  margin-top:20px;
+}
+.footer-grid{display:grid;grid-template-columns:1fr;gap:34px;}
+.footer-logo{font-family:var(--font-heading);font-weight:900;font-size:1.6rem;color:var(--primary);}
+.footer-col h4{font-size:1rem;margin-bottom:14px;color:var(--foreground);}
+.footer-col ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;}
+.footer-col a{color:var(--muted);font-size:.95rem;}
+.footer-col a:hover{color:var(--primary);}
+.social-row{display:flex;gap:12px;margin-top:14px;}
+.social-row a{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--card);border:2px solid var(--foreground);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .25s ease, background .25s ease;
+}
+.social-row a:hover{transform:translateY(-3px);background:var(--accent);}
+.footer-bottom{
+  border-top:1px solid var(--border);margin-top:40px;padding-top:20px;
+  display:flex;flex-direction:column;gap:8px;font-size:.82rem;color:var(--muted);
+  text-align:center;
+}
+
+/* reveal helper */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease, transform .6s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+@media(min-width:768px){
+  .wrap{padding:0 32px;}
+  nav.desktop-nav{display:block;}
+  .hamburger,.mobile-menu,.menu-overlay{display:none;}
+  .hero-grid{grid-template-columns:1.1fr .9fr;}
+  .hero h1{font-size:3.4rem;}
+  .hero-visual{min-height:420px;}
+  .story-grid{grid-template-columns:.9fr 1.1fr;}
+  .section-head h2{font-size:2.4rem;}
+  .story-text h2{font-size:2.4rem;}
+  .testi-row{grid-template-columns:repeat(3,1fr);}
+  .footer-grid{grid-template-columns:1.4fr 1fr 1fr 1fr;}
+  .cta-card{padding:56px 64px;}
+  .cta-card h2{font-size:2.3rem;}
+}
+@media(min-width:1024px){
+  .hero h1{font-size:3.8rem;}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header id="siteHeader">
+  <div class="wrap navrow">
+    <a href="#top" class="logo" aria-label="เที่ยวไปชิมไป ปลายทาง">
+      <img decoding="async" class="logo-img" src="../public/brand/plaeytang-aroidet-v3.png" width="451" height="204" alt="โลโก้ เที่ยวไปชิมไป ปลายทาง และ อร่อยเด็ด">
+    </a>
+    <nav class="desktop-nav">
+      <ul>
+        <li><a href="#reviews" data-lang-th="บทความทั้งหมด" data-lang-en="All Articles">บทความทั้งหมด</a></li>
+        <li><a href="#places" data-lang-th="ที่พักในบทความ" data-lang-en="The Places">ที่พักในบทความ</a></li>
+        <li><a href="#story" data-lang-th="เกี่ยวกับเรา" data-lang-en="About">เกี่ยวกับเรา</a></li>
+        <li><a href="#process" data-lang-th="วิธีทำงาน" data-lang-en="How We Work">วิธีทำงาน</a></li>
+        <li><a href="#contact" data-lang-th="ติดตาม" data-lang-en="Follow">ติดตาม</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-sw" role="button" tabindex="0" aria-label="Switch language"><i data-lucide="globe" width="14" height="14"></i><span class="lang-sw__label">TH</span></div>
+      <button class="hamburger" id="hamburgerBtn" aria-label="เปิดเมนู" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#reviews" data-lang-th="บทความทั้งหมด" data-lang-en="All Articles">บทความทั้งหมด</a></li>
+    <li><a href="#places" data-lang-th="ที่พักในบทความ" data-lang-en="The Places">ที่พักในบทความ</a></li>
+        <li><a href="#story" data-lang-th="เกี่ยวกับเรา" data-lang-en="About">เกี่ยวกับเรา</a></li>
+    <li><a href="#process" data-lang-th="วิธีทำงาน" data-lang-en="How We Work">วิธีทำงาน</a></li>
+    <li><a href="#contact" data-lang-th="ติดตาม" data-lang-en="Follow">ติดตาม</a></li>
+  </ul>
+</div>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="hero-tag"><i data-lucide="map-pin" width="14" height="14"></i><span data-lang-th="รวมที่พักจากเพจต้นทาง" data-lang-en="Stays, straight from the source pages">รวมที่พักจากเพจต้นทาง</span></span>
+        <h1>
+          <span data-lang-th="เที่ยวไปชิมไป" data-lang-en="We travel, we eat,">เที่ยวไปชิมไป</span>
+          <span class="hl" data-lang-th="ปลายทาง" data-lang-en="Plaeytang">ปลายทาง</span>
+        </h1>
+        <p class="lead" data-lang-th="ปลายทางรวบรวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง เก็บทั้งข้อความ ราคา และภาพไว้" data-lang-en="Plaeytang gathers posts about stays and places from the owners' own Facebook pages, keeping the text, the rates and the photographs">ปลายทางรวบรวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง เก็บทั้งข้อความ ราคา และภาพไว้ <span class="hero-brush" data-lang-th="พร้อมลิงก์ต้นทาง" data-lang-en="with a link to the original">พร้อมลิงก์ต้นทาง</span></p>
+        <div class="hero-ctas">
+          <a href="#reviews" class="btn btn-primary"><i data-lucide="compass" width="18" height="18"></i><span data-lang-th="อ่านบทความล่าสุด" data-lang-en="Latest Articles">อ่านบทความล่าสุด</span></a>
+          <a href="#story" class="btn btn-outline"><span data-lang-th="เกี่ยวกับเรา" data-lang-en="About Us">เกี่ยวกับเรา</span></a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-photo">
+          <img loading="eager" decoding="async" fetchpriority="high" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/wanniyangmithiphakwangnakha/01.jpg" alt="อาคารห้องพักสองชั้นของ มิสเตอร์เน็กซ์ รีสอร์ท อยุธยา ยามเย็น">
+        </div>
+        <div class="hero-badge"><span data-lang-th="4 บทความ" data-lang-en="4 articles">4 บทความ</span></div>
+        <div class="hero-chip"><span class="stars"><i data-lucide="bed-double" width="16" height="16"></i></span><span data-lang-th="2 ที่พักในบทความ" data-lang-en="2 places covered">2 ที่พักในบทความ</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-lang-th="4 บทความจากเพจของที่พัก" data-lang-en="Four posts from the venues' own pages">4 บทความจากเพจของที่พัก</span>
+        <h2 data-lang-th="กระดานบทความล่าสุด" data-lang-en="The Latest Article Board">กระดานบทความล่าสุด</h2>
+        <p data-lang-th="สี่บทความที่เผยแพร่แล้ว เรียงจากใหม่ไปเก่า คลิกอ่านชิ้นไหนก่อนก็ได้" data-lang-en="Four published articles, newest first — read them in any order you like">สี่บทความที่เผยแพร่แล้ว เรียงจากใหม่ไปเก่า คลิกอ่านชิ้นไหนก่อนก็ได้</p>
+      </div>
+
+      <!--
+        One tile per row in the posts table, newest first. Titles, excerpts, dates, locations
+        and images are copied from the database; each was imported from the accommodation's own
+        Facebook page, and the tile says which one.
+      -->
+      <div class="bento">
+        <a class="tile tile-a" href="/blog/misetorenksrisorthoyuthyaoyuaintawemueongedinthangsadwksbaya">
+          <img loading="lazy" decoding="async" class="tile-img" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/misetorenksrisorthoyuthyaoyuaintawemueongedinthangsadwksbaya/01.jpg" alt="ป้ายทางเข้า มิสเตอร์เน็กซ์ รีสอร์ท อยุธยา ท่ามกลางสวนหน้าอาคาร">
+          <div class="tile-body">
+            <span class="tile-cat cat-domestic" data-lang-th="ในประเทศ" data-lang-en="Domestic">ในประเทศ</span>
+            <h3 data-lang-th="มิสเตอร์เน็กซ์รีสอร์ทอยุธยาอยู่ในตัวเมืองเดินทางสะดวกสบายใกล้แหล่งท่องเที่ยวสำคัญ…" data-lang-en="Mr. Next Resort Ayutthaya sits in town, an easy trip to the main sights…">มิสเตอร์เน็กซ์รีสอร์ทอยุธยาอยู่ในตัวเมืองเดินทางสะดวกสบายใกล้แหล่งท่องเที่ยวสำคัญ…</h3>
+            <p class="desc" data-lang-th="บรรยากาศร่มรื่นเหมือนอยู่ต่างจังหวัด มีลานแคมป์สนามหญ้าให้ปิ้งย่าง ห้องเตียงเดี่ยวเริ่ม 800 บาท ฟรีอาหารเช้า 2 ท่าน" data-lang-en="Shaded grounds that feel out of town, a camping lawn for grilling, and single-bed rooms from 800 baht with breakfast for two">บรรยากาศร่มรื่นเหมือนอยู่ต่างจังหวัด มีลานแคมป์สนามหญ้าให้ปิ้งย่าง ห้องเตียงเดี่ยวเริ่ม 800 บาท ฟรีอาหารเช้า 2 ท่าน</p>
+            <div class="tile-rating"><i data-lucide="calendar" width="18" height="18"></i><span data-lang-th="14 ส.ค. 2569 · ที่มา เพจ Mr.nextHotel" data-lang-en="14 Aug 2026 · from the Mr.nextHotel page">14 ส.ค. 2569 · ที่มา เพจ Mr.nextHotel</span></div>
+          </div>
+        </a>
+
+        <a class="tile tile-b rot-r" href="/blog/wanniyangmithiphakwangnakha">
+          <img loading="lazy" decoding="async" class="tile-img" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/wanniyangmithiphakwangnakha/01.jpg" alt="อาคารห้องพักสองชั้นของ มิสเตอร์เน็กซ์ รีสอร์ท ยามเย็น มีทางเดินและลานจอดรถ">
+          <div class="tile-body">
+            <span class="tile-cat cat-domestic" data-lang-th="ในประเทศ" data-lang-en="Domestic">ในประเทศ</span>
+            <h3 data-lang-th="วันนี้ยังมีที่พักว่างนะค่า" data-lang-en="Rooms Still Free Today">วันนี้ยังมีที่พักว่างนะค่า</h3>
+            <p class="desc" data-lang-th="อยู่ในตัวเมืองอยุธยา ห่างเกาะเมืองเพียง 5 นาที 🚗 ฟรี WI-FI ลานจอดรถกว้างพร้อมกล้อง 24 ชั่วโมง" data-lang-en="In Ayutthaya town, five minutes from the island 🚗 free Wi-Fi and a wide car park under 24-hour cameras">อยู่ในตัวเมืองอยุธยา ห่างเกาะเมืองเพียง 5 นาที 🚗 ฟรี WI-FI ลานจอดรถกว้างพร้อมกล้อง 24 ชั่วโมง</p>
+            <div class="tile-rating"><i data-lucide="calendar" width="18" height="18"></i><span data-lang-th="11 ส.ค. 2569 · ที่มา เพจ Mr.nextHotel" data-lang-en="11 Aug 2026 · from the Mr.nextHotel page">11 ส.ค. 2569 · ที่มา เพจ Mr.nextHotel</span></div>
+          </div>
+        </a>
+
+        <a class="tile tile-c" href="/blog/banphakosnaihm-tidlamthar-swnlungainrimnam-thiphaknkhrnayk">
+          <img loading="lazy" decoding="async" class="tile-img" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/banphakosnaihm-tidlamthar-swnlungainrimnam-thiphaknkhrnayk/01.jpg" alt="โซนบ้านพักใหม่ริมลำธารของสวนลุงในยามค่ำ มีศาลาไฟประดับและแขกนั่งเล่น">
+          <div class="tile-body">
+            <span class="tile-cat cat-domestic" data-lang-th="ในประเทศ" data-lang-en="Domestic">ในประเทศ</span>
+            <h3 data-lang-th="บ้านพักโซนใหม่ ติดลำธาร @ สวนลุงในริมน้ำ" data-lang-en="New Streamside Zone at Suan Lung Nai Rim Nam">บ้านพักโซนใหม่ ติดลำธาร @ สวนลุงในริมน้ำ</h3>
+            <div class="tile-rating"><i data-lucide="calendar" width="18" height="18"></i><span data-lang-th="3 ส.ค. 2569 · เพจ สวนลุงใน" data-lang-en="3 Aug 2026 · Suan Lung Nai page">3 ส.ค. 2569 · เพจ สวนลุงใน</span></div>
+          </div>
+        </a>
+
+        <a class="tile tile-d rot-l" href="/blog/namlamtharmaaelw">
+          <img loading="lazy" decoding="async" class="tile-img" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/01.jpg" alt="ลำธารน้ำใสไหลผ่านโขดหินที่สวนลุงใน นครนายก มีภูเขาเป็นฉากหลัง">
+          <div class="tile-body">
+            <span class="tile-cat cat-domestic" data-lang-th="ในประเทศ" data-lang-en="Domestic">ในประเทศ</span>
+            <h3 data-lang-th="น้ำลำธารมาแล้ว" data-lang-en="The Stream Is Running Again">น้ำลำธารมาแล้ว</h3>
+            <div class="tile-rating"><i data-lucide="calendar" width="16" height="16"></i><span data-lang-th="25 เม.ย. 2568" data-lang-en="25 Apr 2025">25 เม.ย. 2568</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="story" id="story">
+    <div class="wrap story-grid">
+      <div class="story-photo-wrap reveal">
+        <div class="story-sticker"><i data-lucide="camera"></i></div>
+        <div class="story-photo">
+          <!-- 05 rather than the stream shot, which now carries the last tile on the board. -->
+          <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/05.jpg" alt="ศาลาโต๊ะกินข้าวริมลำธารที่สวนลุงใน นครนายก">
+        </div>
+      </div>
+      <div class="story-text reveal">
+        <span class="eyebrow" data-lang-th="เรื่องของเรา" data-lang-en="Our story">เรื่องของเรา</span>
+        <h2 data-lang-th="รวมโพสต์ที่พักไว้ที่เดียว" data-lang-en="Stay posts, gathered in one place">รวมโพสต์ที่พักไว้ที่เดียว</h2>
+        <p data-lang-th="ปลายทางรวบรวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง เก็บข้อความและภาพไว้ตามที่เพจโพสต์ ไม่ตัดราคาห้องหรือเงื่อนไขออก และใส่ลิงก์กลับไปโพสต์ต้นทางไว้ทุกบทความ" data-lang-en="Plaeytang gathers posts about stays and places from the owners' own Facebook pages, keeps the text and photographs as published without trimming the rates or the conditions, and links every article back to the original post.">ปลายทางรวบรวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง เก็บข้อความและภาพไว้ตามที่เพจโพสต์ ไม่ตัดราคาห้องหรือเงื่อนไขออก และใส่ลิงก์กลับไปโพสต์ต้นทางไว้ทุกบทความ</p>
+        <div class="story-stats">
+          <div class="stat"><b>4</b><span data-lang-th="บทความทั้งหมด" data-lang-en="Articles">บทความทั้งหมด</span></div>
+          <div class="stat"><b>2</b><span data-lang-th="ที่พักในบทความ" data-lang-en="Places covered">ที่พักในบทความ</span></div>
+          <div class="stat"><b>20</b><span data-lang-th="ภาพจากโพสต์ต้นทาง" data-lang-en="Photos from source posts">ภาพจากโพสต์ต้นทาง</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-lang-th="วิธีทำงานของเรา" data-lang-en="How we work">วิธีทำงานของเรา</span>
+        <h2 data-lang-th="บทความมาถึงหน้านี้ได้ยังไง" data-lang-en="How an article gets here">บทความมาถึงหน้านี้ได้ยังไง</h2>
+        <p data-lang-th="สี่ขั้นตอนนี้คือสิ่งที่เกิดขึ้นจริงกับทุกบทความในฐานข้อมูล" data-lang-en="These four steps are what actually happens to every article in the database">สี่ขั้นตอนนี้คือสิ่งที่เกิดขึ้นจริงกับทุกบทความในฐานข้อมูล</p>
+      </div>
+      <!--
+        The pipeline as it really runs: read the venue's page, copy the photographs into our own
+        storage, keep the source URL on the row, and update in place on a re-import.
+      -->
+      <div class="timeline">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-card">
+            <h3 data-lang-th="เก็บจากเพจต้นทาง" data-lang-en="Read the source page">เก็บจากเพจต้นทาง</h3>
+            <p data-lang-th="อ่านโพสต์จากเพจเฟซบุ๊กของที่พักเอง แล้วเก็บข้อความไว้ตามที่เจ้าของเขียน ไม่เรียบเรียงใหม่" data-lang-en="We read the post on the venue's own Facebook page and keep the wording as the owner wrote it, unrewritten">อ่านโพสต์จากเพจเฟซบุ๊กของที่พักเอง แล้วเก็บข้อความไว้ตามที่เจ้าของเขียน ไม่เรียบเรียงใหม่</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-card">
+            <h3 data-lang-th="เก็บภาพไว้เอง" data-lang-en="Keep the photos">เก็บภาพไว้เอง</h3>
+            <p data-lang-th="ภาพในโพสต์ถูกคัดลอกมาเก็บที่สตอเรจของเรา โพสต์ละ 5 ภาพ รวมทั้งหมด 20 ภาพ ไม่มีภาพสต็อกแม้แต่ภาพเดียว" data-lang-en="The photographs are copied into our own storage — five per post, twenty in all, and not one stock image among them">ภาพในโพสต์ถูกคัดลอกมาเก็บที่สตอเรจของเรา โพสต์ละ 5 ภาพ รวมทั้งหมด 20 ภาพ ไม่มีภาพสต็อกแม้แต่ภาพเดียว</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-card">
+            <h3 data-lang-th="ให้เครดิตต้นทางเสมอ" data-lang-en="Always credit the source">ให้เครดิตต้นทางเสมอ</h3>
+            <p data-lang-th="ทุกบทความเก็บลิงก์โพสต์ต้นฉบับไว้และแสดงให้เห็น กดกลับไปตรวจสอบหรือทักไปจองกับที่พักได้โดยตรง" data-lang-en="Every article stores and shows the link to the original post, so you can check it or message the venue to book directly">ทุกบทความเก็บลิงก์โพสต์ต้นฉบับไว้และแสดงให้เห็น กดกลับไปตรวจสอบหรือทักไปจองกับที่พักได้โดยตรง</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-card">
+            <h3 data-lang-th="อัปเดตทับของเดิม" data-lang-en="Update in place">อัปเดตทับของเดิม</h3>
+            <p data-lang-th="ถ้าเพจแก้โพสต์แล้วเรานำเข้าใหม่ ระบบจะอัปเดตบทความเดิม ไม่สร้างบทความซ้ำ นำเข้าครั้งล่าสุด 17 ส.ค. 2569" data-lang-en="If the page edits a post and we re-import, the existing article is updated rather than duplicated. Last import: 17 Aug 2026">ถ้าเพจแก้โพสต์แล้วเรานำเข้าใหม่ ระบบจะอัปเดตบทความเดิม ไม่สร้างบทความซ้ำ นำเข้าครั้งล่าสุด 17 ส.ค. 2569</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    PLACES — the two accommodations behind the four articles. Rates, facilities and the phone
+    number are quoted from the post bodies in the database, which are the venues' own words.
+  -->
+  <section class="testi" id="places">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-lang-th="สองที่พัก" data-lang-en="Two places">สองที่พัก</span>
+        <h2 data-lang-th="ที่พักที่เราเก็บมาเล่า" data-lang-en="The stays we collected">ที่พักที่เราเก็บมาเล่า</h2>
+        <p data-lang-th="ทั้ง 4 บทความมาจากสองที่นี้ อย่างละ 2 บทความ" data-lang-en="All four articles come from these two, two apiece">ทั้ง 4 บทความมาจากสองที่นี้ อย่างละ 2 บทความ</p>
+      </div>
+      <div class="testi-row two">
+        <a class="tcard" href="/blog/misetorenksrisorthoyuthyaoyuaintawemueongedinthangsadwksbaya">
+          <div class="stars"><i data-lucide="bed-double" width="18" height="18"></i></div>
+          <p class="quote"><b data-lang-th="มิสเตอร์เน็กซ์รีสอร์ท อยุธยา" data-lang-en="Mr. Next Resort, Ayutthaya">มิสเตอร์เน็กซ์รีสอร์ท อยุธยา</b><br><span data-lang-th="ห่างเกาะเมือง 5 นาที ใกล้วัดใหญ่ชัยมงคลและวัดพนัญเชิงวรวิหาร ห้องเตียงเดี่ยวเริ่ม 800 บาท (อา.–พฤ.) 900 บาท (ศ.–ส.) ฟรีอาหารเช้า 2 ท่าน บ้านพัก 5 ท่านเริ่ม 2,500 บาท คาเฟ่เปิด 07.00–13.00 น." data-lang-en="Five minutes from the island, near Wat Yai Chai Mongkhon and Wat Phanan Choeng. Single-bed rooms from 800 baht (Sun–Thu) and 900 baht (Fri–Sat) with breakfast for two; a five-person house from 2,500 baht. Café 07.00–13.00.">ห่างเกาะเมือง 5 นาที ใกล้วัดใหญ่ชัยมงคลและวัดพนัญเชิงวรวิหาร ห้องเตียงเดี่ยวเริ่ม 800 บาท (อา.–พฤ.) 900 บาท (ศ.–ส.) ฟรีอาหารเช้า 2 ท่าน บ้านพัก 5 ท่านเริ่ม 2,500 บาท คาเฟ่เปิด 07.00–13.00 น.</span></p>
+          <div class="who">
+            <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/misetorenksrisorthoyuthyaoyuaintawemueongedinthangsadwksbaya/03.jpg" alt="ลานหญ้าของ มิสเตอร์เน็กซ์ รีสอร์ท ยามค่ำ ประดับไฟสาย">
+            <div><b data-lang-th="2 บทความ" data-lang-en="2 articles">2 บทความ</b><br><span data-lang-th="เพจ Mr.nextHotel · โทร 094-972-0888" data-lang-en="Mr.nextHotel page · Tel 094-972-0888">เพจ Mr.nextHotel · โทร 094-972-0888</span></div>
+          </div>
+        </a>
+        <a class="tcard" href="/blog/namlamtharmaaelw">
+          <div class="stars"><i data-lucide="waves" width="18" height="18"></i></div>
+          <p class="quote"><b data-lang-th="สวนลุงใน ที่พักนครนายก" data-lang-en="Suan Lung Nai, Nakhon Nayok">สวนลุงใน ที่พักนครนายก</b><br><span data-lang-th="บ้านพักในสวนมะยงชิด ติดลำธารเขื่อนขุนด่านปราการชล สระว่ายน้ำส่วนตัวประจำบ้าน แอร์ทุกห้องนอน เครื่องครัวครบ พื้นที่ปิ้งย่าง และมีบริการล่องแก่งรับส่งถึงรีสอร์ต" data-lang-en="Houses in a marian-plum orchard beside the stream below Khun Dan Prakan Chon dam: a private pool per house, air conditioning in every bedroom, a full kitchen, a grilling area, and rafting with pick-up to the door.">บ้านพักในสวนมะยงชิด ติดลำธารเขื่อนขุนด่านปราการชล สระว่ายน้ำส่วนตัวประจำบ้าน แอร์ทุกห้องนอน เครื่องครัวครบ พื้นที่ปิ้งย่าง และมีบริการล่องแก่งรับส่งถึงรีสอร์ต</span></p>
+          <div class="who">
+            <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/03.jpg" alt="สระว่ายน้ำกลางแจ้งใต้หลังคาโปร่งของบ้านพักสวนลุงใน">
+            <div><b data-lang-th="2 บทความ" data-lang-en="2 articles">2 บทความ</b><br><span data-lang-th="เพจ สวนลุงใน" data-lang-en="Suan Lung Nai page">เพจ สวนลุงใน</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    The block below asked for an email address for a weekly letter that has no list behind it.
+    Facebook is the one channel in content/site.config.ts, so it is the one call to action.
+  -->
+  <section class="cta-block" id="contact">
+    <div class="wrap">
+      <div class="cta-card reveal">
+        <div class="cta-blob"><span data-lang-th="ทักมาได้เลย" data-lang-en="Say hello">ทักมาได้เลย</span></div>
+        <h2 data-lang-th="ตามอ่านบทความใหม่ได้ที่เฟซบุ๊ก" data-lang-en="New articles land on Facebook first">ตามอ่านบทความใหม่ได้ที่เฟซบุ๊ก</h2>
+        <p data-lang-th="ทักมาถามเรื่องเส้นทาง ที่พัก และร้านอาหารในบทความที่เขียนไปแล้วได้เลย ยินดีตอบทุกคำถาม" data-lang-en="Message us about routes, stays, or any restaurant in an article we have already written — every question gets an answer">ทักมาถามเรื่องเส้นทาง ที่พัก และร้านอาหารในบทความที่เขียนไปแล้วได้เลย ยินดีตอบทุกคำถาม</p>
+        <p style="margin-top:26px;">
+          <a class="btn btn-accent" href="https://www.facebook.com/phanth.kant.suwrrn.wat.hna" target="_blank" rel="noopener">
+            <i data-lucide="facebook" width="18" height="18"></i><span data-lang-th="ไปที่เพจเฟซบุ๊ก" data-lang-en="Open the Facebook page">ไปที่เพจเฟซบุ๊ก</span>
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <img loading="lazy" decoding="async" class="logo-img" src="../public/brand/plaeytang-aroidet-v3.png" width="451" height="204" alt="โลโก้ เที่ยวไปชิมไป ปลายทาง และ อร่อยเด็ด" style="height:52px;">
+      <p style="margin-top:16px;color:var(--muted);max-width:280px;" data-lang-th="รีวิวที่เที่ยว ร้านอาหาร และที่พัก จากปลายทางที่เราไปเอง" data-lang-en="Reviews of places, food and stays — from destinations we went to ourselves">รีวิวที่เที่ยว ร้านอาหาร และที่พัก จากปลายทางที่เราไปเอง</p>
+      <div class="social-row">
+        <a href="https://www.facebook.com/phanth.kant.suwrrn.wat.hna" target="_blank" rel="noopener" aria-label="เฟซบุ๊ก"><i data-lucide="facebook" width="18" height="18"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4 data-lang-th="อ่านต่อ" data-lang-en="Read">อ่านต่อ</h4>
+      <ul>
+        <li><a href="/blog" data-lang-th="บทความทั้งหมด" data-lang-en="All articles">บทความทั้งหมด</a></li>
+        <li><a href="/about" data-lang-th="เกี่ยวกับเรา" data-lang-en="About us">เกี่ยวกับเรา</a></li>
+        <li><a href="#process" data-lang-th="วิธีทำงานของเรา" data-lang-en="How we work">วิธีทำงานของเรา</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-lang-th="หมวดหมู่" data-lang-en="Sections">หมวดหมู่</h4>
+      <ul>
+        <li><a href="/category/domestic" data-lang-th="ในประเทศ" data-lang-en="Domestic">ในประเทศ</a></li>
+        <li><a href="/category/abroad" data-lang-th="ต่างประเทศ" data-lang-en="Abroad">ต่างประเทศ</a></li>
+        <li><a href="/category/food" data-lang-th="ร้านอาหาร" data-lang-en="Food">ร้านอาหาร</a></li>
+        <li><a href="/category/hotel" data-lang-th="ที่พัก" data-lang-en="Stay">ที่พัก</a></li>
+        <li><a href="/category/itinerary" data-lang-th="แผนเที่ยว" data-lang-en="Itinerary">แผนเที่ยว</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-lang-th="ติดต่อ" data-lang-en="Contact">ติดต่อ</h4>
+      <ul>
+        <li><a href="https://www.facebook.com/phanth.kant.suwrrn.wat.hna" target="_blank" rel="noopener" data-lang-th="เฟซบุ๊ก: เที่ยวไปชิมไป ปลายทาง" data-lang-en="Facebook: Plaeytang">เฟซบุ๊ก: เที่ยวไปชิมไป ปลายทาง</a></li>
+        <li><span style="color:var(--muted);font-size:.95rem;" data-lang-th="ทักมาได้ทางเพจ ยินดีตอบทุกคำถาม" data-lang-en="Message the page — every question gets an answer">ทักมาได้ทางเพจ ยินดีตอบทุกคำถาม</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span data-lang-th="© 2569 ปลายทาง สงวนลิขสิทธิ์" data-lang-en="© 2026 Plaeytang. All rights reserved.">© 2569 ปลายทาง สงวนลิขสิทธิ์</span>
+  </div>
+</footer>
+
+<script>
+// header shrink on scroll
+var header = document.getElementById('siteHeader');
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 30){ header.classList.add('scrolled'); }
+  else { header.classList.remove('scrolled'); }
+}, {passive:true});
+
+// mobile menu
+var hamburger = document.getElementById('hamburgerBtn');
+var mobileMenu = document.getElementById('mobileMenu');
+var overlay = document.getElementById('menuOverlay');
+function closeMenu(){
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  overlay.classList.remove('open');
+  hamburger.setAttribute('aria-expanded','false');
+}
+hamburger.addEventListener('click', function(){
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  overlay.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('open') ? 'true' : 'false');
+});
+overlay.addEventListener('click', closeMenu);
+mobileMenu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
+
+// scroll reveal
+var revealEls = document.querySelectorAll('.tile, .reveal, .step, .tcard');
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);
+    }
+  });
+},{threshold:.12});
+revealEls.forEach(function(el){ io.observe(el); });
+
+window.addEventListener('DOMContentLoaded', function(){
+    if(window.lucide){ lucide.createIcons(); }
+  });
+</script>
+
+<script>
+(function(){
+  var K='site-lang';
+  function read(){try{return localStorage.getItem(K)}catch(e){return null}}
+  function write(l){try{localStorage.setItem(K,l)}catch(e){}}
+  var L=read()||'th';
+  function apply(l){
+    L=l;write(l);
+    document.documentElement.lang=l;
+    document.querySelectorAll('[data-lang-th]').forEach(function(e){
+      var t=e.getAttribute('data-lang-'+l);
+      if(t===null){return}
+      if(/[<&]/.test(t)){e.innerHTML=t}else{e.textContent=t}
+    });
+    var label=document.querySelector('.lang-sw__label');
+    if(label){label.textContent=l.toUpperCase()}
+  }
+  var sw=document.querySelector('.lang-sw');
+  if(sw){
+    sw.addEventListener('click',function(){apply(L==='th'?'en':'th')});
+    sw.addEventListener('keydown',function(ev){
+      if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();apply(L==='th'?'en':'th')}
+    });
+  }
+  if(L!=='th'){apply(L)}
+})();
+</script>
+</body>
+</html>

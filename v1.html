@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ปลายทาง — บันทึกกิน เที่ยว พัก ทั่วประเทศไทย</title>
-<meta name="description" content="ปลายทาง บล็อกรีวิวร้านอาหารและที่พักทั่วประเทศไทย เรื่องเล่าซื่อตรงจากทุกโต๊ะอาหารและทุกคืนพักที่คุ้มค่าการเดินทาง">
+<title>เที่ยวไปชิมไป ปลายทาง — รีวิวที่เที่ยว ร้านอาหาร และที่พัก</title>
+<meta name="description" content="รวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง อ่านง่ายในที่เดียว พร้อมลิงก์กลับไปโพสต์ต้นทางทุกบทความ">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pridi:wght@300;400;500;600&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@0.460.0"></script>
+<script src="https://unpkg.com/lucide@0.460.0" defer></script>
 <style>
   :root{
     --background:#F5F1E6;
@@ -116,18 +116,38 @@
     color:var(--bg-accent);
     padding:.2em 0;
   }
+  /*
+    The supplied lockup is a white knockout on transparency, so it only reads on a dark
+    surface. Over the hero it sits on the scrim; once the navbar turns into a light bar on
+    scroll it gets its own dark plate rather than disappearing.
+  */
+  .logo-img{height:44px; width:auto; display:block; padding:.3rem .55rem; border-radius:3px 14px 3px 14px; transition:background .4s ease;}
+  .navbar.scrolled .logo-img{background:var(--bg-accent);}
+  @media(max-width:520px){ .logo-img{height:36px;} }
   .nav-links{display:none;}
   .nav-links a{
     font-size:.92rem; font-weight:600; padding:.6em .9em; border-radius:20px;
     transition:background .3s ease, color .3s ease;
   }
   .nav-links a:hover{background:rgba(14,92,87,.1); color:var(--bg-accent);}
+  /*
+    Over the hero the bar is transparent, so the links were near-black type sitting on a
+    photograph. They go light until the bar turns solid on scroll, where the dark ink is right.
+    The bar also carries its own top-down wash: light type needs a dark backdrop it can count
+    on, and a photograph is not one — this one is bright sky at the top.
+  */
+  .navbar:not(.scrolled){background:linear-gradient(180deg, rgba(14,20,17,.58) 0%, rgba(14,20,17,.28) 60%, transparent 100%);}
+  .navbar:not(.scrolled) .nav-links a{color:var(--background); text-shadow:0 1px 12px rgba(14,20,17,.55);}
+  .navbar:not(.scrolled) .nav-links a:hover{background:rgba(245,241,230,.16); color:#fff;}
+  .navbar:not(.scrolled) .lang-sw{color:var(--background); text-shadow:0 1px 12px rgba(14,20,17,.55);}
   .nav-right{display:flex; align-items:center; gap:1.1rem;}
   .lang-sw{
+    cursor:pointer;
     display:flex; align-items:center; gap:.35em;
     font-size:.8em; font-weight:600; color:var(--bg-accent);
     padding:.5em .3em;
   }
+  .lang-sw:focus-visible{outline:2px solid currentColor; outline-offset:3px;}
   .hamburger{
     background:var(--bg-accent); color:#fff; border:none; border-radius:50%;
     width:44px; height:44px; display:flex; align-items:center; justify-content:center;
@@ -160,13 +180,31 @@
     padding:6rem 0 4.5rem;
   }
   .hero-media{position:absolute; inset:0; overflow:hidden; z-index:0;}
-  .hero-media img{width:100%; height:100%; object-fit:cover; transform:scale(1.08); animation:heroZoom 18s ease-in-out infinite alternate;}
-  @keyframes heroZoom{ from{transform:scale(1.08);} to{transform:scale(1.16);} }
+  /*
+    The photograph is 960px on its long edge, and a full-bleed hero on a desktop display is
+    twice that — so it is already being asked to stretch. The old 1.08→1.16 zoom multiplied
+    that stretch and made the softness visibly breathe; the drift below is small enough to
+    keep the frame alive without magnifying anything. `object-position` favours the water and
+    the ridge over the gravel in the foreground, which is the part worth cropping to.
+  */
+  .hero-media img{
+    width:100%; height:100%; object-fit:cover; object-position:center 38%;
+    transform:scale(1.02);
+    animation:heroZoom 26s ease-in-out infinite alternate;
+    filter:saturate(1.06) contrast(1.04);
+  }
+  @keyframes heroZoom{ from{transform:scale(1.02);} to{transform:scale(1.05);} }
+  @media(prefers-reduced-motion:reduce){ .hero-media img{animation:none;} }
+  /*
+    Two jobs: hold the title legible at the bottom, and darken the top strip so the masthead
+    is not reading against bright leaves. The middle is left clearer than before — the old
+    scrim muted the whole picture to make the text safe, which is what made it look washed.
+  */
   .hero-scrim{
     position:absolute; inset:0; z-index:1;
     background:
-      linear-gradient(0deg, rgba(14,20,17,.88) 5%, rgba(14,20,17,.35) 48%, rgba(14,20,17,.15) 75%),
-      linear-gradient(100deg, rgba(14,92,87,.55), rgba(27,79,160,.12) 55%, transparent 80%);
+      linear-gradient(0deg, rgba(14,20,17,.90) 4%, rgba(14,20,17,.55) 30%, rgba(14,20,17,.10) 66%, rgba(14,20,17,.22) 100%),
+      linear-gradient(100deg, rgba(14,92,87,.42), rgba(27,79,160,.10) 55%, transparent 80%);
   }
   .hero-frame{
     position:absolute; top:6.4rem; right:1.4rem; z-index:2;
@@ -202,6 +240,14 @@
   }
   @keyframes bob{0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,8px);}}
 
+  /* The date stamp is right-anchored, so on a narrow screen it is the first thing to run out
+     of room — the tracking and the numeral size come down rather than reaching the edge. */
+  @media(max-width:520px){
+    .hero-frame{top:5.2rem; max-width:60vw;}
+    .hero-frame span{letter-spacing:.10em;}
+    .hero-frame .reel-no{font-size:1.25rem;}
+  }
+
   @media(min-width:768px){
     .hero{padding:8rem 0 6rem;}
     .hero-sub{font-size:1.2rem;}
@@ -233,10 +279,23 @@
 
   /* ---------------- Reviews horizontal scroll ---------------- */
   .reviews{padding:5rem 0; background:var(--background);}
+  /*
+    Held to the same 1200px column as the section heading and centred in it, rather than
+    running full-bleed from the window edge: with only four cards the row ended flush left
+    with a wide gap on the right, and the first card sat hard against the edge of the window
+    with its shadow cut off.
+  */
   .reviews-scroll{
-    display:flex; gap:1.4rem; overflow-x:auto; padding:.6rem .2rem 1.4rem;
+    display:flex; gap:1.4rem; overflow-x:auto;
+    padding:.6rem 1.4rem 1.4rem;
     scroll-snap-type:x proximity;
-    margin:0 -1.4rem; padding-left:1.4rem; padding-right:1.4rem;
+    /*
+      Without this the snapport is the padding box, so the first card snaps its own edge to
+      the very edge of the scroller and swallows the gutter — the card ends up flush against
+      the window while the heading above it keeps its margin.
+    */
+    scroll-padding-inline:1.4rem;
+    max-width:1200px; margin:0 auto;
   }
   .reviews-scroll::-webkit-scrollbar{height:6px;}
   .reviews-scroll::-webkit-scrollbar-thumb{background:var(--border); border-radius:10px;}
@@ -265,8 +324,24 @@
   .review-link{display:inline-flex; align-items:center; gap:.4em; font-weight:700; color:var(--primary); font-size:.9rem;}
   .review-link i{width:16px; height:16px; transition:transform .3s ease;}
   .review-link:hover i{transform:translate(3px,-3px);}
-  .stars{display:flex; gap:.15rem; margin-bottom:.6rem; color:var(--secondary);}
-  .stars i{width:15px; height:15px;}
+  /*
+    Wide enough for all four to stand side by side inside the column, so the row is a settled
+    four-up rather than a strip with a scrollbar hiding the last article. Below this it goes
+    back to being a swipeable strip, which is the right behaviour on a phone.
+  */
+  @media(min-width:1160px){
+    .reviews-scroll{overflow:visible;}
+    .review-card{flex:1 1 0; width:auto; max-width:none;}
+  }
+  .review-date{font-size:.78rem; color:var(--muted); font-weight:600; margin:.35rem 0 .2rem; display:block;}
+  /* Provenance line: every article was imported from the venue's own page, so it says so. */
+  .review-src{
+    display:flex; align-items:center; gap:.4em;
+    margin-top:.9rem; padding-top:.7rem; border-top:1px solid var(--border);
+    font-size:.76rem; font-weight:600; color:var(--muted);
+  }
+  .review-src i{width:14px; height:14px; flex:none;}
+  .review-src:hover{color:var(--primary);}
 
   /* ---------------- Destinations ---------------- */
   .destinations{padding:5rem 0 2rem; background:var(--background);}
@@ -298,21 +373,6 @@
     .dest-row.reverse .dest-text{order:1;}
   }
 
-  /* ---------------- Stats band ---------------- */
-  .stats-band{
-    background:var(--bg-accent);
-    color:var(--background);
-    padding:5rem 0;
-    margin:2rem 0;
-    clip-path:polygon(0 3.2rem,100% 0,100% calc(100% - 3.2rem),0 100%);
-  }
-  .stats-grid{
-    display:grid; grid-template-columns:repeat(2,1fr); gap:2.4rem 1.6rem;
-    text-align:center;
-  }
-  .stat-num{display:block; font-family:var(--font-heading); font-size:clamp(2.4rem,6vw,3.6rem); color:var(--secondary); padding-top:.1em;}
-  .stat-lbl{display:block; font-size:.85rem; opacity:.85; margin-top:.4rem;}
-  @media(min-width:768px){ .stats-grid{grid-template-columns:repeat(4,1fr);} }
 
   /* ---------------- About ---------------- */
   .about{padding:6rem 0; background:var(--background);}
@@ -352,21 +412,13 @@
   .g-tall{grid-row:span 2;}
   .gallery-grid a{aspect-ratio:1/1;}
   .g-tall{aspect-ratio:1/2.05;}
+  /*
+    Three columns, not four: the gallery holds the five photographs that actually exist for
+    the Suan Lung Nai stay, and 3 × 2 with one tall cell leaves no empty tiles.
+  */
   @media(min-width:640px){
-    .gallery-grid{grid-template-columns:repeat(4,1fr);}
+    .gallery-grid{grid-template-columns:repeat(3,1fr);}
   }
-
-  /* ---------------- Testimonial ---------------- */
-  .testimonial{
-    padding:5.5rem 1.4rem; text-align:center;
-    max-width:820px; margin:0 auto;
-  }
-  .quote-icon{width:38px; height:38px; color:var(--secondary); margin-bottom:1rem;}
-  .testimonial-text{
-    font-family:var(--font-heading); font-size:clamp(1.4rem,4vw,2.1rem);
-    color:var(--bg-accent); padding-top:.15em; line-height:1.6;
-  }
-  .testimonial-attr{margin-top:1.2rem; color:var(--muted); font-weight:600; font-size:.92rem;}
 
   /* ---------------- Contact ---------------- */
   .contact{
@@ -377,17 +429,6 @@
   }
   .contact-text{max-width:640px; margin:0 auto; text-align:center;}
   .contact-text p.body-p{color:var(--muted); margin-bottom:1.8rem;}
-  .contact-form{
-    display:flex; flex-direction:column; gap:.8rem;
-    max-width:420px; margin:0 auto 2rem;
-  }
-  .contact-form input{
-    padding:.9em 1.1em; border-radius:2px 16px 2px 16px; border:2px solid var(--border);
-    font-family:var(--font-body); font-size:1rem; background:var(--background); color:var(--foreground);
-    min-height:44px;
-  }
-  .contact-form input:focus{outline:none; border-color:var(--primary);}
-  @media(min-width:560px){ .contact-form{flex-direction:row;} .contact-form input{flex:1;} }
   .contact-social{display:flex; justify-content:center; gap:1rem; margin-top:.4rem;}
   .contact-social a{
     width:46px; height:46px; border-radius:50%; background:var(--bg-accent); color:var(--background);
@@ -418,45 +459,54 @@
 
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
-    <a href="#top" class="logo">ปลายทาง</a>
+    <a href="#top" class="logo" aria-label="เที่ยวไปชิมไป ปลายทาง">
+      <img decoding="async" class="logo-img" src="../public/brand/plaeytang-aroidet-v3.png" width="451" height="204" alt="โลโก้ เที่ยวไปชิมไป ปลายทาง และ อร่อยเด็ด">
+    </a>
     <ul class="nav-links">
-      <li><a href="#reviews" data-lang-th="รีวิว" data-lang-en="Reviews">รีวิว</a></li>
-      <li><a href="#destinations" data-lang-th="จุดหมาย" data-lang-en="Destinations">จุดหมาย</a></li>
-      <li><a href="#about" data-lang-th="เกี่ยวกับฉัน" data-lang-en="About">เกี่ยวกับฉัน</a></li>
-      <li><a href="#contact" data-lang-th="ติดต่อ" data-lang-en="Contact">ติดต่อ</a></li>
+      <li><a href="#reviews" data-lang-th="บทความทั้งหมด" data-lang-en="All Articles">บทความทั้งหมด</a></li>
+      <li><a href="#places" data-lang-th="ที่พักในบทความ" data-lang-en="The Places">ที่พักในบทความ</a></li>
+      <li><a href="#about" data-lang-th="เกี่ยวกับเรา" data-lang-en="About">เกี่ยวกับเรา</a></li>
+      <li><a href="#contact" data-lang-th="ติดตาม" data-lang-en="Follow">ติดตาม</a></li>
     </ul>
     <div class="nav-right">
-      <div class="lang-sw" aria-label="Switch language">
+      <div class="lang-sw" role="button" tabindex="0" aria-label="Switch language">
         <i data-lucide="globe" width="14" height="14"></i><span class="lang-sw__label">TH</span>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Menu"><i data-lucide="menu"></i></button>
+      <button class="hamburger" id="hamburger" aria-label="เปิดเมนู" aria-expanded="false" aria-controls="mobileMenu"><i data-lucide="menu"></i></button>
     </div>
   </div>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#reviews" data-lang-th="รีวิว" data-lang-en="Reviews">รีวิว</a>
-    <a href="#destinations" data-lang-th="จุดหมาย" data-lang-en="Destinations">จุดหมาย</a>
-    <a href="#about" data-lang-th="เกี่ยวกับฉัน" data-lang-en="About">เกี่ยวกับฉัน</a>
-    <a href="#contact" data-lang-th="ติดต่อ" data-lang-en="Contact">ติดต่อ</a>
+    <a href="#reviews" data-lang-th="บทความทั้งหมด" data-lang-en="All Articles">บทความทั้งหมด</a>
+    <a href="#places" data-lang-th="ที่พักในบทความ" data-lang-en="The Places">ที่พักในบทความ</a>
+    <a href="#about" data-lang-th="เกี่ยวกับเรา" data-lang-en="About">เกี่ยวกับเรา</a>
+    <a href="#contact" data-lang-th="ติดตาม" data-lang-en="Follow">ติดตาม</a>
   </div>
 </nav>
 
+<main id="content">
 <header class="hero" id="top">
   <div class="hero-media">
-    <img src="https://images.unsplash.com/photo-1734069951523-0a0c216cd394?w=1600&h=1900&fit=crop" alt="โต๊ะอาหารไทยจัดเต็มพร้อมกับข้าวหลากชนิดวางเรียงกัน">
+    <!--
+      The same photograph as the one on the article card below, but the 960×1280 copy in the
+      repository rather than the 443×590 one the database row points at. Facebook served the
+      scraper 590px on the long edge, which is fine in a card and falls apart across a
+      full-bleed hero; every other image on this page is still the Blob URL from the row.
+    -->
+    <img loading="eager" decoding="async" fetchpriority="high" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/01.jpg" alt="ลำธารน้ำใสไหลผ่านโขดหินที่สวนลุงใน นครนายก มีภูเขาเป็นฉากหลัง">
   </div>
   <div class="hero-scrim"></div>
   <div class="hero-frame">
-    <span>EST. 2016</span>
-    <span class="reel-no">ตอนที่ 128</span>
+    <span data-lang-th="อัปเดตล่าสุด" data-lang-en="LAST UPDATED">อัปเดตล่าสุด</span>
+    <span class="reel-no" data-lang-th="14 ส.ค. 2569" data-lang-en="14 Aug 2026">14 ส.ค. 2569</span>
   </div>
   <div class="hero-content">
     <div class="container">
-      <p class="kicker kicker-light" data-lang-th="บันทึกกิน-นอนระหว่างทาง" data-lang-en="A FOOD &amp; STAY JOURNAL">บันทึกกิน-นอนระหว่างทาง</p>
+      <p class="kicker kicker-light" data-lang-th="รวมที่พักและที่เที่ยวจากเพจต้นทาง" data-lang-en="STAYS AND PLACES, STRAIGHT FROM THE SOURCE PAGES">รวมที่พักและที่เที่ยวจากเพจต้นทาง</p>
       <h1 class="hero-title">ปลายทาง</h1>
-      <p class="hero-sub" data-lang-th="เรื่องเล่าจากโต๊ะอาหารริมทาง สู่ห้องพักปลายฟ้า ทั่วทุกจังหวัดของประเทศไทย เขียนอย่างซื่อตรง ไม่มีสปอนเซอร์บังตา" data-lang-en="Stories from roadside dining tables to rooms at the edge of the sky, told honestly, across every province of Thailand.">เรื่องเล่าจากโต๊ะอาหารริมทาง สู่ห้องพักปลายฟ้า ทั่วทุกจังหวัดของประเทศไทย เขียนอย่างซื่อตรง ไม่มีสปอนเซอร์บังตา</p>
+      <p class="hero-sub" data-lang-th="รวมโพสต์ที่พักและที่เที่ยวจากเพจของเจ้าของที่พักเอง เก็บไว้ให้อ่านง่ายในที่เดียว พร้อมลิงก์กลับไปโพสต์ต้นทางทุกบทความ" data-lang-en="Posts about stays and places, collected from the pages of the owners themselves and kept in one readable place — every article links back to the post it came from.">รวมโพสต์ที่พักและที่เที่ยวจากเพจของเจ้าของที่พักเอง เก็บไว้ให้อ่านง่ายในที่เดียว พร้อมลิงก์กลับไปโพสต์ต้นทางทุกบทความ</p>
       <div class="hero-cta">
-        <a href="#reviews" class="btn btn-primary"><span data-lang-th="อ่านรีวิวล่าสุด" data-lang-en="Read Latest Reviews">อ่านรีวิวล่าสุด</span><i data-lucide="arrow-right"></i></a>
-        <a href="#destinations" class="btn btn-outline"><span data-lang-th="สำรวจจุดหมาย" data-lang-en="Explore Destinations">สำรวจจุดหมาย</span></a>
+        <a href="#reviews" class="btn btn-primary"><span data-lang-th="อ่านบทความล่าสุด" data-lang-en="Read Latest Articles">อ่านบทความล่าสุด</span><i data-lucide="arrow-right"></i></a>
+        <a href="#places" class="btn btn-outline"><span data-lang-th="ดูที่พักในบทความ" data-lang-en="See the Places">ดูที่พักในบทความ</span></a>
       </div>
     </div>
   </div>
@@ -466,15 +516,15 @@
 <section class="intro reveal">
   <div class="container intro-grid">
     <div class="intro-quote">
-      <p class="serif-quote" data-lang-th="เราเชื่อว่าทุกจานอาหารและทุกคืนที่พัก คือฉากหนึ่งของการเดินทาง ที่ควรค่าแก่การเล่าอย่างซื่อตรง" data-lang-en="We believe every dish and every night's stay is a scene in the journey — worth telling honestly.">เราเชื่อว่าทุกจานอาหารและทุกคืนที่พัก คือฉากหนึ่งของการเดินทาง ที่ควรค่าแก่การเล่าอย่างซื่อตรง</p>
+      <p class="serif-quote" data-lang-th="ทุกบทความคือโพสต์จากเพจของที่พักเอง เก็บมาไว้ให้ครบทั้งราคา สิ่งอำนวยความสะดวก และเบอร์ติดต่อ" data-lang-en="Every article is a post from the venue's own page, kept complete — the rates, the facilities and the phone number included.">ทุกบทความคือโพสต์จากเพจของที่พักเอง เก็บมาไว้ให้ครบทั้งราคา สิ่งอำนวยความสะดวก และเบอร์ติดต่อ</p>
     </div>
     <div class="intro-meta">
-      <p class="kicker" data-lang-th="เกี่ยวกับปลายทาง" data-lang-en="ABOUT PLAI THANG">เกี่ยวกับปลายทาง</p>
-      <p class="intro-text" data-lang-th="ปลายทางเริ่มต้นจากสมุดบันทึกเล่มเล็ก ที่จดทุกร้านอาหารและที่พักระหว่างทริปทั่วไทย จนกลายเป็นพื้นที่ที่นักเดินทางไว้ใจก่อนตัดสินใจออกเดินทางทุกครั้ง" data-lang-en="Plai Thang began as a small notebook, jotting down every restaurant and stay along the road — now a trusted space travelers turn to before every trip.">ปลายทางเริ่มต้นจากสมุดบันทึกเล่มเล็ก ที่จดทุกร้านอาหารและที่พักระหว่างทริปทั่วไทย จนกลายเป็นพื้นที่ที่นักเดินทางไว้ใจก่อนตัดสินใจออกเดินทางทุกครั้ง</p>
+      <p class="kicker" data-lang-th="เกี่ยวกับปลายทาง" data-lang-en="ABOUT PLAEYTANG">เกี่ยวกับปลายทาง</p>
+      <p class="intro-text" data-lang-th="ปลายทางรวบรวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง นำมาจัดให้อ่านง่าย ค้นหาได้ และเก็บภาพจากโพสต์ไว้ครบ โดยยังลิงก์กลับไปยังโพสต์ต้นทางเสมอ" data-lang-en="Plaeytang collects posts about stays and places from the owners' own Facebook pages, arranging them so they are easy to read and search, keeping the photographs from each post, and always linking back to the original.">ปลายทางรวบรวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง นำมาจัดให้อ่านง่าย ค้นหาได้ และเก็บภาพจากโพสต์ไว้ครบ โดยยังลิงก์กลับไปยังโพสต์ต้นทางเสมอ</p>
       <div class="intro-stats">
-        <div><span class="num">128+</span><span class="lbl" data-lang-th="ร้านอาหารที่รีวิว" data-lang-en="Restaurants Reviewed">ร้านอาหารที่รีวิว</span></div>
-        <div><span class="num">64+</span><span class="lbl" data-lang-th="ที่พักที่เข้าพักจริง" data-lang-en="Stays Experienced">ที่พักที่เข้าพักจริง</span></div>
-        <div><span class="num">32</span><span class="lbl" data-lang-th="จังหวัดทั่วไทย" data-lang-en="Provinces Covered">จังหวัดทั่วไทย</span></div>
+        <div><span class="num">4</span><span class="lbl" data-lang-th="บทความทั้งหมด" data-lang-en="Articles">บทความทั้งหมด</span></div>
+        <div><span class="num">2</span><span class="lbl" data-lang-th="ที่พักในบทความ" data-lang-en="Places Covered">ที่พักในบทความ</span></div>
+        <div><span class="num">20</span><span class="lbl" data-lang-th="ภาพจากโพสต์ต้นทาง" data-lang-en="Photos from Source Posts">ภาพจากโพสต์ต้นทาง</span></div>
       </div>
     </div>
   </div>
@@ -483,177 +533,132 @@
 <section id="reviews" class="reviews">
   <div class="container">
     <div class="section-head reveal">
-      <p class="kicker" data-lang-th="เรื่องที่กำลังพูดถึง" data-lang-en="TRENDING STORIES">เรื่องที่กำลังพูดถึง</p>
-      <h2 class="section-title" data-lang-th="รีวิวล่าสุด" data-lang-en="Latest Reviews">รีวิวล่าสุด</h2>
+      <p class="kicker" data-lang-th="4 บทความจากเพจของที่พัก" data-lang-en="FOUR POSTS FROM THE VENUES' OWN PAGES">4 บทความจากเพจของที่พัก</p>
+      <h2 class="section-title" data-lang-th="บทความล่าสุด" data-lang-en="Latest Articles">บทความล่าสุด</h2>
     </div>
   </div>
+  <!--
+    The four rows in the posts table, newest first. Title, excerpt, date, section, location and
+    cover are copied verbatim from the database; the images are the Blob URLs the rows point at.
+    Every one was imported from the accommodation's own Facebook page, so each card credits and
+    links back to the post it came from.
+  -->
   <div class="reviews-scroll">
     <article class="review-card reveal">
       <div class="review-media">
-        <img src="https://images.unsplash.com/photo-1552912470-ee2e96439539?w=700&h=560&fit=crop" alt="พ่อครัวกำลังปรุงอาหารริมทางในตลาดกลางคืน">
-        <span class="review-tag" data-lang-th="ร้านอาหาร" data-lang-en="Restaurant">ร้านอาหาร</span>
+        <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/misetorenksrisorthoyuthyaoyuaintawemueongedinthangsadwksbaya/01.jpg" alt="ป้ายทางเข้า มิสเตอร์เน็กซ์ รีสอร์ท อยุธยา ท่ามกลางสวนหน้าอาคาร">
+        <span class="review-tag" data-lang-th="ในประเทศ" data-lang-en="Domestic">ในประเทศ</span>
       </div>
       <div class="review-body">
         <span class="review-no">No. 01</span>
-        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
-        <h3 data-lang-th="ผัดไทยริมคลอง ตำนาน 40 ปี" data-lang-en="Canal-side Pad Thai, a 40-Year Legend">ผัดไทยริมคลอง ตำนาน 40 ปี</h3>
-        <p data-lang-th="สูตรลับที่ไม่เคยเปลี่ยน ริมคลองบางลำพู ยังคงรสชาติดั้งเดิมไว้ทุกคำ" data-lang-en="A secret recipe unchanged for decades along Bang Lamphu canal — every bite still tastes like history.">สูตรลับที่ไม่เคยเปลี่ยน ริมคลองบางลำพู ยังคงรสชาติดั้งเดิมไว้ทุกคำ</p>
-        <a href="#" class="review-link"><span data-lang-th="อ่านต่อ" data-lang-en="Read More">อ่านต่อ</span><i data-lucide="arrow-up-right"></i></a>
+        <span class="review-date" data-lang-th="14 ส.ค. 2569 · โรงแรม มิสเตอร์เน็กซ์" data-lang-en="14 Aug 2026 · Mr. Next Hotel">14 ส.ค. 2569 · โรงแรม มิสเตอร์เน็กซ์</span>
+        <h3 data-lang-th="มิสเตอร์เน็กซ์รีสอร์ทอยุธยาอยู่ในตัวเมืองเดินทางสะดวกสบายใกล้แหล่งท่องเที่ยวสำคัญหรือจะตัวเกาะเมืองก็ห่างเพียงแค่ 5…" data-lang-en="Mr. Next Resort Ayutthaya sits in town, an easy trip to the main sights and just 5 minutes from the island…">มิสเตอร์เน็กซ์รีสอร์ทอยุธยาอยู่ในตัวเมืองเดินทางสะดวกสบายใกล้แหล่งท่องเที่ยวสำคัญหรือจะตัวเกาะเมืองก็ห่างเพียงแค่ 5…</h3>
+        <p data-lang-th="ภายในที่พักบรรยากาศร่มรื่นเหมือนอยู่ต่างจังหวัดให้ความรู้สึกผ่อนคลายจะมาเป็นกลุ่มครอบครัวก็สามารถมาทำกิจกรรมลานแคมป์สนามหญ้าของเราได้คะ 🍻🍳 • สิ่งอำนวยความ…" data-lang-en="Shaded grounds that feel out of town, a lawn where families can camp and grill, and rooms with the full set of amenities…">ภายในที่พักบรรยากาศร่มรื่นเหมือนอยู่ต่างจังหวัดให้ความรู้สึกผ่อนคลายจะมาเป็นกลุ่มครอบครัวก็สามารถมาทำกิจกรรมลานแคมป์สนามหญ้าของเราได้คะ 🍻🍳 • สิ่งอำนวยความ…</p>
+        <a href="/blog/misetorenksrisorthoyuthyaoyuaintawemueongedinthangsadwksbaya" class="review-link"><span data-lang-th="อ่านต่อ" data-lang-en="Read More">อ่านต่อ</span><i data-lucide="arrow-up-right"></i></a>
+        <a class="review-src" href="https://www.facebook.com/Mr.nextHotel/posts/pfbid02fD39B9bxghwvQxnkuhifM6ByQbdo6uejXZDdEnvU8XKA8JFyzGbP7egMRDNsRXtEl?_rdr" target="_blank" rel="noopener"><i data-lucide="facebook"></i><span data-lang-th="ที่มา: เพจ Mr.nextHotel" data-lang-en="Source: Mr.nextHotel page">ที่มา: เพจ Mr.nextHotel</span></a>
       </div>
     </article>
 
     <article class="review-card reveal">
       <div class="review-media">
-        <img src="https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?w=700&h=560&fit=crop" alt="สระว่ายน้ำริมต้นปาล์มของรีสอร์ทริมทะเล">
-        <span class="review-tag" data-lang-th="ที่พัก" data-lang-en="Stay">ที่พัก</span>
+        <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/wanniyangmithiphakwangnakha/01.jpg" alt="อาคารห้องพักสองชั้นของ มิสเตอร์เน็กซ์ รีสอร์ท ยามเย็น มีทางเดินและลานจอดรถ">
+        <span class="review-tag" data-lang-th="ในประเทศ" data-lang-en="Domestic">ในประเทศ</span>
       </div>
       <div class="review-body">
         <span class="review-no">No. 02</span>
-        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
-        <h3 data-lang-th="รีสอร์ทริมทะเลอันดามัน ที่ไม่อยากเช็คเอาท์" data-lang-en="An Andaman Sea Resort You Never Want to Check Out Of">รีสอร์ทริมทะเลอันดามัน ที่ไม่อยากเช็คเอาท์</h3>
-        <p data-lang-th="ห้องพักหันหน้าสู่ทะเลทุกห้อง พร้อมสระอินฟินิตี้ที่มองไม่เห็นเส้นขอบฟ้า" data-lang-en="Every room faces the sea, with an infinity pool that erases the line between water and sky.">ห้องพักหันหน้าสู่ทะเลทุกห้อง พร้อมสระอินฟินิตี้ที่มองไม่เห็นเส้นขอบฟ้า</p>
-        <a href="#" class="review-link"><span data-lang-th="อ่านต่อ" data-lang-en="Read More">อ่านต่อ</span><i data-lucide="arrow-up-right"></i></a>
+        <span class="review-date" data-lang-th="11 ส.ค. 2569 · โรงแรม มิสเตอร์เน็กซ์" data-lang-en="11 Aug 2026 · Mr. Next Hotel">11 ส.ค. 2569 · โรงแรม มิสเตอร์เน็กซ์</span>
+        <h3 data-lang-th="วันนี้ยังมีที่พักว่างนะค่า" data-lang-en="Rooms Still Free Today">วันนี้ยังมีที่พักว่างนะค่า</h3>
+        <p data-lang-th="มิสเตอร์เน็กซ์รีสอร์ทอยุธยาอยู่ในตัวเมืองเดินทางสะดวกสบายใกล้แหล่งท่องเที่ยวสำคัญหรือจะตัวเกาะเมืองก็ห่างเพียงแค่ 5 นาที🚗 ภายในที่พักบรรยากาศร่มรื่นเหมือนอยู่…" data-lang-en="Mr. Next Resort Ayutthaya is in town, close to the main sights and only 5 minutes from the island by car, with shaded grounds that feel like the countryside…">มิสเตอร์เน็กซ์รีสอร์ทอยุธยาอยู่ในตัวเมืองเดินทางสะดวกสบายใกล้แหล่งท่องเที่ยวสำคัญหรือจะตัวเกาะเมืองก็ห่างเพียงแค่ 5 นาที🚗 ภายในที่พักบรรยากาศร่มรื่นเหมือนอยู่…</p>
+        <a href="/blog/wanniyangmithiphakwangnakha" class="review-link"><span data-lang-th="อ่านต่อ" data-lang-en="Read More">อ่านต่อ</span><i data-lucide="arrow-up-right"></i></a>
+        <a class="review-src" href="https://www.facebook.com/Mr.nextHotel/posts/pfbid0gmTtAwnQxyc5EXuQsB4StmYyQMsPfDrb13MhRETPkZKgUm27qhiKsvGoF1L6D8L4l?_rdr" target="_blank" rel="noopener"><i data-lucide="facebook"></i><span data-lang-th="ที่มา: เพจ Mr.nextHotel" data-lang-en="Source: Mr.nextHotel page">ที่มา: เพจ Mr.nextHotel</span></a>
       </div>
     </article>
 
     <article class="review-card reveal">
       <div class="review-media">
-        <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=700&h=560&fit=crop" alt="ก๋วยเตี๋ยวเรือสูตรโบราณเสิร์ฟร้อนๆ ในถ้วยเซรามิก">
-        <span class="review-tag" data-lang-th="ร้านอาหาร" data-lang-en="Restaurant">ร้านอาหาร</span>
+        <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/banphakosnaihm-tidlamthar-swnlungainrimnam-thiphaknkhrnayk/01.jpg" alt="โซนบ้านพักใหม่ริมลำธารของสวนลุงในยามค่ำ มีศาลาไฟประดับและแขวกำลังนั่งเล่น">
+        <span class="review-tag" data-lang-th="ในประเทศ" data-lang-en="Domestic">ในประเทศ</span>
       </div>
       <div class="review-body">
         <span class="review-no">No. 03</span>
-        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
-        <h3 data-lang-th="ก๋วยเตี๋ยวเรือสูตรโบราณ ย่านเมืองเก่าเชียงใหม่" data-lang-en="Century-Old Boat Noodles in Old Chiang Mai">ก๋วยเตี๋ยวเรือสูตรโบราณ ย่านเมืองเก่าเชียงใหม่</h3>
-        <p data-lang-th="น้ำซุปเข้มข้นที่เคี่ยวข้ามคืน เสิร์ฟในถ้วยเล็กแบบดั้งเดิม" data-lang-en="A rich broth simmered overnight, served the traditional way in small bowls.">น้ำซุปเข้มข้นที่เคี่ยวข้ามคืน เสิร์ฟในถ้วยเล็กแบบดั้งเดิม</p>
-        <a href="#" class="review-link"><span data-lang-th="อ่านต่อ" data-lang-en="Read More">อ่านต่อ</span><i data-lucide="arrow-up-right"></i></a>
+        <span class="review-date" data-lang-th="3 ส.ค. 2569 · สวนลุงใน ที่พักนครนายก" data-lang-en="3 Aug 2026 · Suan Lung Nai, Nakhon Nayok">3 ส.ค. 2569 · สวนลุงใน ที่พักนครนายก</span>
+        <h3 data-lang-th="บ้านพักโซนใหม่ ติดลำธาร @ สวนลุงในริมน้ำ ที่พักนครนายก (คนละโซนกับสวนลุงในนะ)" data-lang-en="New Streamside Zone at Suan Lung Nai Rim Nam, Nakhon Nayok (a different zone from Suan Lung Nai)">บ้านพักโซนใหม่ ติดลำธาร @ สวนลุงในริมน้ำ ที่พักนครนายก (คนละโซนกับสวนลุงในนะ)</h3>
+        <p data-lang-th="สนใจจองทักมาได้เลยนะคะ หนีความวุ่นวาย มาพักผ่อนท่ามกลางธรรมชาติ สูดอากาศบริสุทธิ์ ฟังเสียงน้ำไหลทั้งวัน 🍃" data-lang-en="Message to book. Escape the rush, rest in the middle of nature, breathe clean air and listen to running water all day 🍃">สนใจจองทักมาได้เลยนะคะ หนีความวุ่นวาย มาพักผ่อนท่ามกลางธรรมชาติ สูดอากาศบริสุทธิ์ ฟังเสียงน้ำไหลทั้งวัน 🍃</p>
+        <a href="/blog/banphakosnaihm-tidlamthar-swnlungainrimnam-thiphaknkhrnayk" class="review-link"><span data-lang-th="อ่านต่อ" data-lang-en="Read More">อ่านต่อ</span><i data-lucide="arrow-up-right"></i></a>
+        <a class="review-src" href="https://www.facebook.com/suanlungnai/posts/pfbid0ekifPXcSNtxnneXQSWZnoDDnXc3TxtyW1Gz5Ra3W2BjWD1XS7GUrjJbpo6gj6nG3l?_rdr" target="_blank" rel="noopener"><i data-lucide="facebook"></i><span data-lang-th="ที่มา: เพจ สวนลุงใน" data-lang-en="Source: Suan Lung Nai page">ที่มา: เพจ สวนลุงใน</span></a>
       </div>
     </article>
 
     <article class="review-card reveal">
       <div class="review-media">
-        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=700&h=560&fit=crop" alt="ห้องพักโรงแรมบูทีคตกแต่งด้วยผ้าลินินสีขาวและเฟอร์นิเจอร์ไม้">
-        <span class="review-tag" data-lang-th="ที่พัก" data-lang-en="Stay">ที่พัก</span>
+        <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/01.jpg" alt="ลำธารน้ำใสไหลผ่านโขดหินที่สวนลุงใน นครนายก มีภูเขาเป็นฉากหลัง">
+        <span class="review-tag" data-lang-th="ในประเทศ" data-lang-en="Domestic">ในประเทศ</span>
       </div>
       <div class="review-body">
         <span class="review-no">No. 04</span>
-        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
-        <h3 data-lang-th="โรงแรมบูทีคกลางเมืองเก่า ทุกมุมคือฉากถ่ายรูป" data-lang-en="A Boutique Hotel Where Every Corner Is a Photo Set">โรงแรมบูทีคกลางเมืองเก่า ทุกมุมคือฉากถ่ายรูป</h3>
-        <p data-lang-th="ตกแต่งด้วยของสะสมงานคราฟต์ท้องถิ่น ผสมกลิ่นอายยุค 60" data-lang-en="Decorated with local craft pieces and a nostalgic sixties atmosphere.">ตกแต่งด้วยของสะสมงานคราฟต์ท้องถิ่น ผสมกลิ่นอายยุค 60</p>
-        <a href="#" class="review-link"><span data-lang-th="อ่านต่อ" data-lang-en="Read More">อ่านต่อ</span><i data-lucide="arrow-up-right"></i></a>
-      </div>
-    </article>
-
-    <article class="review-card reveal">
-      <div class="review-media">
-        <img src="https://images.unsplash.com/photo-1572776082973-1cb8d1790872?w=700&h=560&fit=crop" alt="อาหารทะเลย่างจัดเสิร์ฟบนจานไม้">
-        <span class="review-tag" data-lang-th="ร้านอาหาร" data-lang-en="Restaurant">ร้านอาหาร</span>
-      </div>
-      <div class="review-body">
-        <span class="review-no">No. 05</span>
-        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
-        <h3 data-lang-th="อาหารทะเลสดจากเรือประมง หัวหิน" data-lang-en="Fresh-Off-the-Boat Seafood in Hua Hin">อาหารทะเลสดจากเรือประมง หัวหิน</h3>
-        <p data-lang-th="กุ้งเผาตัวโตและปูนึ่งที่จับได้ตั้งแต่เช้า ไม่ผ่านห้องเย็นแม้แต่ชั่วโมงเดียว" data-lang-en="Grilled prawns and steamed crab caught that very morning, never touching a cold room.">กุ้งเผาตัวโตและปูนึ่งที่จับได้ตั้งแต่เช้า ไม่ผ่านห้องเย็นแม้แต่ชั่วโมงเดียว</p>
-        <a href="#" class="review-link"><span data-lang-th="อ่านต่อ" data-lang-en="Read More">อ่านต่อ</span><i data-lucide="arrow-up-right"></i></a>
+        <span class="review-date" data-lang-th="25 เม.ย. 2568 · สวนลุงใน ที่พักนครนายก" data-lang-en="25 Apr 2025 · Suan Lung Nai, Nakhon Nayok">25 เม.ย. 2568 · สวนลุงใน ที่พักนครนายก</span>
+        <h3 data-lang-th="น้ำลำธารมาแล้ว" data-lang-en="The Stream Is Running Again">น้ำลำธารมาแล้ว</h3>
+        <p data-lang-th="โซนบ้านพัก สวนลุงใน 1 และสวนลุงใน 2 🌿 พักผ่อนสบาย ๆ ที่ “สวนลุงใน” นครนายก 🍊🌿" data-lang-en="The bungalow zones at Suan Lung Nai 1 and 2 🌿 an easy stay at “Suan Lung Nai”, Nakhon Nayok 🍊🌿">โซนบ้านพัก สวนลุงใน 1 และสวนลุงใน 2 🌿 พักผ่อนสบาย ๆ ที่ “สวนลุงใน” นครนายก 🍊🌿</p>
+        <a href="/blog/namlamtharmaaelw" class="review-link"><span data-lang-th="อ่านต่อ" data-lang-en="Read More">อ่านต่อ</span><i data-lucide="arrow-up-right"></i></a>
+        <a class="review-src" href="https://www.facebook.com/suanlungnai/posts/pfbid02D1vcN3Eu4d6JNECXcCadEGSsYEBKn28ERma3XoqqyQ3LER1xacktNTvy3QG3y1dBl?_rdr" target="_blank" rel="noopener"><i data-lucide="facebook"></i><span data-lang-th="ที่มา: เพจ สวนลุงใน" data-lang-en="Source: Suan Lung Nai page">ที่มา: เพจ สวนลุงใน</span></a>
       </div>
     </article>
   </div>
 </section>
 
-<section id="destinations" class="destinations">
+<!--
+  The two accommodations the four posts come from. Everything stated here — nightly rates,
+  facilities, the phone number, what is nearby — is quoted from the post bodies in the
+  database, which are the venues' own words.
+-->
+<section id="places" class="destinations">
   <div class="container">
     <div class="section-head center reveal">
-      <p class="kicker" data-lang-th="สี่บทของการเดินทาง" data-lang-en="FOUR CHAPTERS ON THE ROAD">สี่บทของการเดินทาง</p>
-      <h2 class="section-title" data-lang-th="จุดหมายที่แนะนำ" data-lang-en="Recommended Destinations">จุดหมายที่แนะนำ</h2>
+      <p class="kicker" data-lang-th="สองที่พักในบทความ" data-lang-en="THE TWO PLACES">สองที่พักในบทความ</p>
+      <h2 class="section-title" data-lang-th="ที่พักที่เราเก็บมาเล่า" data-lang-en="The Stays We Collected">ที่พักที่เราเก็บมาเล่า</h2>
     </div>
 
     <div class="dest-row reveal">
       <div class="dest-media">
-        <img src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&h=640&fit=crop" alt="วัดสีทองยามเช้าในกรุงเทพมหานคร">
+        <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/misetorenksrisorthoyuthyaoyuaintawemueongedinthangsadwksbaya/03.jpg" alt="ลานหญ้าของ มิสเตอร์เน็กซ์ รีสอร์ท ยามค่ำ ประดับไฟสายและมีแขกนั่งเล่น">
         <span class="dest-num">I</span>
       </div>
       <div class="dest-text">
-        <h3 data-lang-th="กรุงเทพฯ" data-lang-en="Bangkok">กรุงเทพฯ</h3>
-        <p data-lang-th="เมืองหลวงที่ไม่เคยหลับ ตลาดกลางคืนริมแม่น้ำเจ้าพระยา และสตรีทฟู้ดตำนานที่ซ่อนอยู่ในซอยเล็กๆ" data-lang-en="The city that never sleeps — riverside night markets and legendary street food hidden in narrow sois.">เมืองหลวงที่ไม่เคยหลับ ตลาดกลางคืนริมแม่น้ำเจ้าพระยา และสตรีทฟู้ดตำนานที่ซ่อนอยู่ในซอยเล็กๆ</p>
-        <a href="#" class="text-link"><span data-lang-th="ดูรีวิวกรุงเทพฯ" data-lang-en="See Bangkok Reviews">ดูรีวิวกรุงเทพฯ</span><i data-lucide="arrow-right"></i></a>
+        <h3 data-lang-th="มิสเตอร์เน็กซ์รีสอร์ท อยุธยา" data-lang-en="Mr. Next Resort, Ayutthaya">มิสเตอร์เน็กซ์รีสอร์ท อยุธยา</h3>
+        <p data-lang-th="ห่างเกาะเมืองอยุธยา 5 นาที ใกล้วัดใหญ่ชัยมงคลและวัดพนัญเชิงวรวิหาร ห้องเตียงเดี่ยวเริ่ม 800 บาท (อา.–พฤ.) และ 900 บาท (ศ.–ส. นักขัตฤกษ์) ฟรีอาหารเช้า 2 ท่าน บ้านพัก 5 ท่านเริ่ม 2,500 บาท มีคาเฟ่เปิด 07.00–13.00 น. โทร 094-972-0888" data-lang-en="Five minutes from Ayutthaya's island, near Wat Yai Chai Mongkhon and Wat Phanan Choeng. Single-bed rooms from 800 baht (Sun–Thu) and 900 baht (Fri–Sat and holidays), breakfast for two included; a five-person house from 2,500 baht. Café open 07.00–13.00. Tel 094-972-0888.">ห่างเกาะเมืองอยุธยา 5 นาที ใกล้วัดใหญ่ชัยมงคลและวัดพนัญเชิงวรวิหาร ห้องเตียงเดี่ยวเริ่ม 800 บาท (อา.–พฤ.) และ 900 บาท (ศ.–ส. นักขัตฤกษ์) ฟรีอาหารเช้า 2 ท่าน บ้านพัก 5 ท่านเริ่ม 2,500 บาท มีคาเฟ่เปิด 07.00–13.00 น. โทร 094-972-0888</p>
+        <a href="/blog/misetorenksrisorthoyuthyaoyuaintawemueongedinthangsadwksbaya" class="text-link"><span data-lang-th="อ่าน 2 บทความของที่นี่" data-lang-en="Read the 2 posts from here">อ่าน 2 บทความของที่นี่</span><i data-lucide="arrow-right"></i></a>
       </div>
     </div>
 
     <div class="dest-row reverse reveal">
       <div class="dest-media">
-        <img src="https://images.unsplash.com/photo-1617676367459-e25e7d90c02a?w=800&h=640&fit=crop" alt="โต๊ะไม้และเก้าอี้ในคาเฟ่บรรยากาศอบอุ่นเชียงใหม่">
+        <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/03.jpg" alt="สระว่ายน้ำกลางแจ้งใต้หลังคาโปร่งของบ้านพักสวนลุงใน นครนายก">
         <span class="dest-num">II</span>
       </div>
       <div class="dest-text">
-        <h3 data-lang-th="เชียงใหม่" data-lang-en="Chiang Mai">เชียงใหม่</h3>
-        <p data-lang-th="เมืองเก่าเหนือที่หายใจเข้าออกเป็นกาแฟดริป คาเฟ่ในตรอกโบราณ และตลาดเช้าที่มีชีวิตชีวา" data-lang-en="An old northern city breathing pour-over coffee, cafés in ancient alleys, and a lively morning market.">เมืองเก่าเหนือที่หายใจเข้าออกเป็นกาแฟดริป คาเฟ่ในตรอกโบราณ และตลาดเช้าที่มีชีวิตชีวา</p>
-        <a href="#" class="text-link"><span data-lang-th="ดูรีวิวเชียงใหม่" data-lang-en="See Chiang Mai Reviews">ดูรีวิวเชียงใหม่</span><i data-lucide="arrow-right"></i></a>
-      </div>
-    </div>
-
-    <div class="dest-row reveal">
-      <div class="dest-media">
-        <img src="https://images.unsplash.com/photo-1623718649591-311775a30c43?w=800&h=640&fit=crop" alt="สระว่ายน้ำริมต้นปาล์มมองเห็นทะเลอันดามัน">
-        <span class="dest-num">III</span>
-      </div>
-      <div class="dest-text">
-        <h3 data-lang-th="ภูเก็ต &amp; กระบี่" data-lang-en="Phuket &amp; Krabi">ภูเก็ต &amp; กระบี่</h3>
-        <p data-lang-th="ทะเลอันดามันสีมรกต หน้าผาหินปูน และรีสอร์ทซ่อนตัวที่เปิดวิวสู่เกาะน้อยใหญ่" data-lang-en="Emerald Andaman waters, limestone cliffs, and hidden resorts opening onto scattered islands.">ทะเลอันดามันสีมรกต หน้าผาหินปูน และรีสอร์ทซ่อนตัวที่เปิดวิวสู่เกาะน้อยใหญ่</p>
-        <a href="#" class="text-link"><span data-lang-th="ดูรีวิวภูเก็ต-กระบี่" data-lang-en="See Phuket-Krabi Reviews">ดูรีวิวภูเก็ต-กระบี่</span><i data-lucide="arrow-right"></i></a>
-      </div>
-    </div>
-
-    <div class="dest-row reverse reveal">
-      <div class="dest-media">
-        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&h=640&fit=crop" alt="ห้องนอนโทนขาวดำตกแต่งสไตล์วินเทจของที่พักในหัวหิน">
-        <span class="dest-num">IV</span>
-      </div>
-      <div class="dest-text">
-        <h3 data-lang-th="หัวหิน" data-lang-en="Hua Hin">หัวหิน</h3>
-        <p data-lang-th="เมืองทะเลใกล้กรุงที่พาย้อนเวลา ด้วยที่พักสไตล์วินเทจและตลาดโต้รุ่งริมหาด" data-lang-en="A seaside town near the capital, taking you back in time through vintage stays and beachside night markets.">เมืองทะเลใกล้กรุงที่พาย้อนเวลา ด้วยที่พักสไตล์วินเทจและตลาดโต้รุ่งริมหาด</p>
-        <a href="#" class="text-link"><span data-lang-th="ดูรีวิวหัวหิน" data-lang-en="See Hua Hin Reviews">ดูรีวิวหัวหิน</span><i data-lucide="arrow-right"></i></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="stats-band reveal">
-  <div class="container">
-    <div class="stats-grid">
-      <div>
-        <span class="stat-num">128+</span>
-        <span class="stat-lbl" data-lang-th="ร้านอาหารที่รีวิวแล้ว" data-lang-en="Restaurants Reviewed">ร้านอาหารที่รีวิวแล้ว</span>
-      </div>
-      <div>
-        <span class="stat-num">64+</span>
-        <span class="stat-lbl" data-lang-th="ที่พักที่เข้าพักจริง" data-lang-en="Stays Experienced">ที่พักที่เข้าพักจริง</span>
-      </div>
-      <div>
-        <span class="stat-num">32</span>
-        <span class="stat-lbl" data-lang-th="จังหวัดทั่วไทย" data-lang-en="Provinces Covered">จังหวัดทั่วไทย</span>
-      </div>
-      <div>
-        <span class="stat-num">9</span>
-        <span class="stat-lbl" data-lang-th="ปีบนเส้นทางนี้" data-lang-en="Years on the Road">ปีบนเส้นทางนี้</span>
+        <h3 data-lang-th="สวนลุงใน ที่พักนครนายก" data-lang-en="Suan Lung Nai, Nakhon Nayok">สวนลุงใน ที่พักนครนายก</h3>
+        <p data-lang-th="บ้านพักในสวนมะยงชิด ติดลำธารเขื่อนขุนด่านปราการชล มีสระว่ายน้ำส่วนตัวประจำบ้านพัก แอร์ทุกห้องนอน เครื่องครัวครบ พื้นที่ปิ้งย่าง และบริการล่องแก่งรับส่งถึงรีสอร์ต โซนใหม่ริมลำธารลงเล่นน้ำได้" data-lang-en="Houses set in a marian-plum orchard beside the stream below Khun Dan Prakan Chon dam: a private pool per house, air conditioning in every bedroom, a full kitchen, a grilling area, and rafting with pick-up to the door. The new streamside zone is shallow enough to swim in.">บ้านพักในสวนมะยงชิด ติดลำธารเขื่อนขุนด่านปราการชล มีสระว่ายน้ำส่วนตัวประจำบ้านพัก แอร์ทุกห้องนอน เครื่องครัวครบ พื้นที่ปิ้งย่าง และบริการล่องแก่งรับส่งถึงรีสอร์ต โซนใหม่ริมลำธารลงเล่นน้ำได้</p>
+        <a href="/blog/namlamtharmaaelw" class="text-link"><span data-lang-th="อ่าน 2 บทความของที่นี่" data-lang-en="Read the 2 posts from here">อ่าน 2 บทความของที่นี่</span><i data-lucide="arrow-right"></i></a>
       </div>
     </div>
   </div>
 </section>
 
 <section id="about" class="about">
+
   <div class="container about-grid">
     <div class="about-media reveal">
-      <img src="https://images.unsplash.com/photo-1771783972638-8520d3afcc71?w=640&h=800&fit=crop" alt="ภาพเหมือนผู้เขียนบล็อกปลายทางท่ามกลางทุ่งดอกไม้">
+      <img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/05.jpg" alt="ศาลาโต๊ะกินข้าวริมลำธารที่สวนลุงใน นครนายก">
     </div>
     <div class="about-text reveal">
-      <p class="kicker" data-lang-th="ผู้เขียน" data-lang-en="THE WRITER">ผู้เขียน</p>
-      <h2 class="section-title" data-lang-th="เกี่ยวกับฉัน" data-lang-en="About Me">เกี่ยวกับฉัน</h2>
-      <p data-lang-th="สวัสดีค่ะ ฉันชื่อแพร ผู้ก่อตั้งปลายทาง เริ่มจากความชอบส่วนตัวที่อยากบันทึกทุกมื้ออาหารและทุกที่พักระหว่างเดินทางคนเดียวเมื่อเก้าปีก่อน" data-lang-en="Hi, I'm Prae, founder of Plai Thang. It began as a personal habit — recording every meal and every stay while traveling solo, nine years ago.">สวัสดีค่ะ ฉันชื่อแพร ผู้ก่อตั้งปลายทาง เริ่มจากความชอบส่วนตัวที่อยากบันทึกทุกมื้ออาหารและทุกที่พักระหว่างเดินทางคนเดียวเมื่อเก้าปีก่อน</p>
-      <p data-lang-th="ทุกวันนี้ปลายทางยังคงยึดหลักเดิม คือจ่ายเองทุกมื้อ พักเองทุกคืน และเขียนในสิ่งที่รู้สึกจริง ไม่ว่าจะเป็นร้านเล็กริมทางหรือรีสอร์ทห้าดาว" data-lang-en="Today, Plai Thang still holds the same principle — paying for every meal, booking every stay, and writing only what feels true, whether it's a small roadside shop or a five-star resort.">ทุกวันนี้ปลายทางยังคงยึดหลักเดิม คือจ่ายเองทุกมื้อ พักเองทุกคืน และเขียนในสิ่งที่รู้สึกจริง ไม่ว่าจะเป็นร้านเล็กริมทางหรือรีสอร์ทห้าดาว</p>
+      <p class="kicker" data-lang-th="ที่มาของเนื้อหา" data-lang-en="WHERE THIS COMES FROM">ที่มาของเนื้อหา</p>
+      <h2 class="section-title" data-lang-th="เกี่ยวกับเรา" data-lang-en="About Us">เกี่ยวกับเรา</h2>
+      <p data-lang-th="ปลายทางรวบรวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง ตอนนี้มี 4 บทความจาก 2 ที่พัก คือ มิสเตอร์เน็กซ์รีสอร์ท อยุธยา และ สวนลุงใน นครนายก" data-lang-en="Plaeytang collects posts about stays and places from the owners' own Facebook pages. There are four articles so far, from two places: Mr. Next Resort in Ayutthaya and Suan Lung Nai in Nakhon Nayok.">ปลายทางรวบรวมโพสต์ที่พักและที่เที่ยวจากเพจเฟซบุ๊กของเจ้าของที่พักเอง ตอนนี้มี 4 บทความจาก 2 ที่พัก คือ มิสเตอร์เน็กซ์รีสอร์ท อยุธยา และ สวนลุงใน นครนายก</p>
+      <p data-lang-th="เราเก็บข้อความและภาพตามที่เพจโพสต์ไว้ ไม่ตัดทอนราคาห้องหรือเงื่อนไข และใส่ลิงก์กลับไปโพสต์ต้นทางไว้ทุกบทความ เพื่อให้ตรวจสอบและติดต่อจองกับที่พักได้โดยตรง" data-lang-en="We keep the text and photographs as the page published them, without trimming the room rates or the conditions, and every article carries a link back to the original post so you can check it and book with the venue directly.">เราเก็บข้อความและภาพตามที่เพจโพสต์ไว้ ไม่ตัดทอนราคาห้องหรือเงื่อนไข และใส่ลิงก์กลับไปโพสต์ต้นทางไว้ทุกบทความ เพื่อให้ตรวจสอบและติดต่อจองกับที่พักได้โดยตรง</p>
       <ul class="about-facts">
-        <li><i data-lucide="calendar"></i><span data-lang-th="9 ปีบนเส้นทางนี้" data-lang-en="9 years on the road">9 ปีบนเส้นทางนี้</span></li>
-        <li><i data-lucide="handshake"></i><span data-lang-th="ร่วมงานกับ 40+ แบรนด์" data-lang-en="Partnered with 40+ brands">ร่วมงานกับ 40+ แบรนด์</span></li>
-        <li><i data-lucide="users"></i><span data-lang-th="ผู้ติดตาม 250,000+ คน" data-lang-en="250,000+ followers">ผู้ติดตาม 250,000+ คน</span></li>
+        <li><i data-lucide="facebook"></i><span data-lang-th="เนื้อหาและภาพมาจากเพจของที่พักโดยตรง" data-lang-en="Text and photos come from the venue's own page">เนื้อหาและภาพมาจากเพจของที่พักโดยตรง</span></li>
+        <li><i data-lucide="link"></i><span data-lang-th="ทุกบทความมีลิงก์ไปโพสต์ต้นทาง" data-lang-en="Every article links back to the source post">ทุกบทความมีลิงก์ไปโพสต์ต้นทาง</span></li>
+        <li><i data-lucide="refresh-cw"></i><span data-lang-th="นำเข้าครั้งล่าสุด 17 ส.ค. 2569" data-lang-en="Last imported 17 Aug 2026">นำเข้าครั้งล่าสุด 17 ส.ค. 2569</span></li>
       </ul>
     </div>
   </div>
@@ -662,89 +667,94 @@
 <section class="gallery">
   <div class="container">
     <div class="section-head reveal">
-      <p class="kicker" data-lang-th="เศษเสี้ยวจากทริป" data-lang-en="FRAGMENTS FROM THE ROAD">เศษเสี้ยวจากทริป</p>
+      <p class="kicker" data-lang-th="ภาพจากโพสต์ สวนลุงใน นครนายก" data-lang-en="PHOTOS FROM THE SUAN LUNG NAI POST">ภาพจากโพสต์ สวนลุงใน นครนายก</p>
       <h2 class="section-title" data-lang-th="แกลเลอรี" data-lang-en="Gallery">แกลเลอรี</h2>
     </div>
+    <!-- cover_url + gallery_urls of the namlamtharmaaelw row, in the order the column stores them. -->
     <div class="gallery-grid reveal">
-      <a href="#" class="g-tall"><img src="https://images.unsplash.com/photo-1699292933049-1ef1ade2de6d?w=500&h=1000&fit=crop" alt="จานข้าวและถั่วจัดวางอย่างสวยงาม"></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=500&h=500&fit=crop" alt="ราเมนทะเลในชามเซรามิก"></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1562835155-1fa627c69744?w=500&h=500&fit=crop" alt="โคมไฟระย้าภายในคาเฟ่บรรยากาศดี"></a>
-      <a href="#" class="g-tall"><img src="https://images.unsplash.com/photo-1650435489945-96b2b19b943b?w=500&h=1000&fit=crop" alt="จานอาหารเสิร์ฟในร้านอาหารบรรยากาศดี"></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1510379872535-9310dc6fd6a7?w=500&h=500&fit=crop" alt="อาคารสีขาวใต้ท้องฟ้าสีเทา"></a>
-      <a href="#"><img src="https://images.unsplash.com/photo-1780803244390-53d653db2931?w=500&h=500&fit=crop" alt="ระเบียงมองเห็นร้านค้าริมถนนที่พลุกพล่าน"></a>
+      <a href="/blog/namlamtharmaaelw" class="g-tall"><img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/01.jpg" alt="ลำธารน้ำใสไหลผ่านโขดหิน มีภูเขาเป็นฉากหลัง"></a>
+      <a href="/blog/namlamtharmaaelw"><img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/02.jpg" alt="อาคารต้อนรับหลังคาแดงของสวนลุงในท่ามกลางต้นไม้"></a>
+      <a href="/blog/namlamtharmaaelw"><img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/03.jpg" alt="สระว่ายน้ำกลางแจ้งใต้หลังคาโปร่งของที่พัก"></a>
+      <a href="/blog/namlamtharmaaelw"><img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/04.jpg" alt="ลานกรวดหน้าบ้านพักหลายหลังใต้ร่มไม้"></a>
+      <a href="/blog/namlamtharmaaelw"><img loading="lazy" decoding="async" src="https://slfld8vhauj2irnj.public.blob.vercel-storage.com/posts/namlamtharmaaelw/05.jpg" alt="ศาลาโต๊ะกินข้าวริมลำธาร"></a>
     </div>
   </div>
 </section>
 
-<section class="testimonial reveal">
-  <i data-lucide="quote" class="quote-icon"></i>
-  <p class="testimonial-text" data-lang-th="“ปลายทางไม่ได้แค่รีวิว แต่เล่าเรื่องจนเรารู้สึกอยากไปเองทันที”" data-lang-en="“Plai Thang doesn't just review — it tells a story that makes you want to go there yourself.”">“ปลายทางไม่ได้แค่รีวิว แต่เล่าเรื่องจนเรารู้สึกอยากไปเองทันที”</p>
-  <p class="testimonial-attr" data-lang-th="— มิ้นท์, นักอ่านประจำ" data-lang-en="— Mint, Regular Reader">— มิ้นท์, นักอ่านประจำ</p>
-</section>
-
+<!--
+  The testimonial that stood here quoted a reader who does not exist, and the block below it
+  collected email addresses with nothing behind the form. Facebook is the one channel in
+  content/site.config.ts, so it is the one channel offered.
+-->
 <section id="contact" class="contact">
   <div class="container">
     <div class="contact-text reveal">
-      <p class="kicker" data-lang-th="ไม่พลาดทุกจุดหมาย" data-lang-en="NEVER MISS A DESTINATION">ไม่พลาดทุกจุดหมาย</p>
-      <h2 class="section-title" data-lang-th="ติดตามปลายทางต่อไป" data-lang-en="Follow Plai Thang">ติดตามปลายทางต่อไป</h2>
-      <p class="body-p" data-lang-th="รับรีวิวร้านอาหารและที่พักใหม่ๆ ส่งตรงถึงอีเมลทุกสัปดาห์ ไม่มีสแปม ไม่มีคอนเทนต์ยัดเยียด" data-lang-en="Get new restaurant and stay reviews delivered to your inbox every week. No spam, no forced content.">รับรีวิวร้านอาหารและที่พักใหม่ๆ ส่งตรงถึงอีเมลทุกสัปดาห์ ไม่มีสแปม ไม่มีคอนเทนต์ยัดเยียด</p>
-      <form class="contact-form" onsubmit="return false;">
-        <input type="email" placeholder="you@email.com" required>
-        <button type="submit" class="btn btn-accent"><span data-lang-th="สมัครรับข่าวสาร" data-lang-en="Subscribe">สมัครรับข่าวสาร</span></button>
-      </form>
+      <p class="kicker" data-lang-th="ติดตามปลายทาง" data-lang-en="FOLLOW PLAEYTANG">ติดตามปลายทาง</p>
+      <h2 class="section-title" data-lang-th="ตามอ่านบทความใหม่ได้ที่เฟซบุ๊ก" data-lang-en="New Articles Land on Facebook First">ตามอ่านบทความใหม่ได้ที่เฟซบุ๊ก</h2>
+      <p class="body-p" data-lang-th="ทักมาถามเรื่องเส้นทาง ที่พัก และร้านอาหารในบทความที่เขียนไปแล้วได้เลย ยินดีตอบทุกคำถาม" data-lang-en="Message us about routes, stays, or any restaurant in an article we have already written — every question gets an answer.">ทักมาถามเรื่องเส้นทาง ที่พัก และร้านอาหารในบทความที่เขียนไปแล้วได้เลย ยินดีตอบทุกคำถาม</p>
+      <p style="margin-bottom:2rem;">
+        <a class="btn btn-accent" href="https://www.facebook.com/phanth.kant.suwrrn.wat.hna" target="_blank" rel="noopener">
+          <i data-lucide="facebook"></i><span data-lang-th="ไปที่เพจเฟซบุ๊ก" data-lang-en="Open the Facebook page">ไปที่เพจเฟซบุ๊ก</span>
+        </a>
+      </p>
       <div class="contact-social">
-        <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
-        <a href="#" aria-label="Youtube"><i data-lucide="youtube"></i></a>
-        <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
-        <a href="#" aria-label="TikTok"><i data-lucide="music-2"></i></a>
+        <a href="https://www.facebook.com/phanth.kant.suwrrn.wat.hna" target="_blank" rel="noopener" aria-label="เฟซบุ๊ก"><i data-lucide="facebook"></i></a>
       </div>
     </div>
   </div>
 </section>
+</main>
 
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="#top" class="logo">ปลายทาง</a>
-        <p data-lang-th="เรื่องเล่าจากโต๊ะอาหารและที่พักทั่วไทย เขียนด้วยใจ ไม่เอนเอียง" data-lang-en="Stories from tables and stays across Thailand, written honestly.">เรื่องเล่าจากโต๊ะอาหารและที่พักทั่วไทย เขียนด้วยใจ ไม่เอนเอียง</p>
+        <a href="#top" class="logo" aria-label="เที่ยวไปชิมไป ปลายทาง">
+          <img loading="lazy" decoding="async" class="logo-img" src="../public/brand/plaeytang-aroidet-v3.png" width="451" height="204" alt="โลโก้ เที่ยวไปชิมไป ปลายทาง และ อร่อยเด็ด" style="height:56px; padding:0;">
+        </a>
+        <p data-lang-th="รีวิวที่เที่ยว ร้านอาหาร และที่พัก จากปลายทางที่เราไปเอง" data-lang-en="Reviews of places, food and stays — from destinations we went to ourselves.">รีวิวที่เที่ยว ร้านอาหาร และที่พัก จากปลายทางที่เราไปเอง</p>
       </div>
       <nav class="footer-links">
-        <a href="#reviews" data-lang-th="รีวิว" data-lang-en="Reviews">รีวิว</a>
-        <a href="#destinations" data-lang-th="จุดหมาย" data-lang-en="Destinations">จุดหมาย</a>
-        <a href="#about" data-lang-th="เกี่ยวกับฉัน" data-lang-en="About">เกี่ยวกับฉัน</a>
-        <a href="#contact" data-lang-th="ติดต่อ" data-lang-en="Contact">ติดต่อ</a>
+        <a href="#reviews" data-lang-th="บทความทั้งหมด" data-lang-en="All Articles">บทความทั้งหมด</a>
+        <a href="#places" data-lang-th="ที่พักในบทความ" data-lang-en="The Places">ที่พักในบทความ</a>
+        <a href="#about" data-lang-th="เกี่ยวกับเรา" data-lang-en="About">เกี่ยวกับเรา</a>
+        <a href="#contact" data-lang-th="ติดตาม" data-lang-en="Follow">ติดตาม</a>
       </nav>
       <div class="footer-contact">
-        <p class="kicker" data-lang-th="ติดต่องาน" data-lang-en="GET IN TOUCH">ติดต่องาน</p>
-        <a href="mailto:hello@plaithang.co">hello@plaithang.co</a>
-        <p data-lang-th="กรุงเทพมหานคร ประเทศไทย" data-lang-en="Bangkok, Thailand">กรุงเทพมหานคร ประเทศไทย</p>
+        <p class="kicker" data-lang-th="ติดต่อเรา" data-lang-en="GET IN TOUCH">ติดต่อเรา</p>
+        <a href="https://www.facebook.com/phanth.kant.suwrrn.wat.hna" target="_blank" rel="noopener" data-lang-th="เฟซบุ๊ก: เที่ยวไปชิมไป ปลายทาง" data-lang-en="Facebook: Plaeytang">เฟซบุ๊ก: เที่ยวไปชิมไป ปลายทาง</a>
+        <p data-lang-th="ทักมาได้ทางเพจ ยินดีตอบคำถามเรื่องเส้นทางและที่พัก" data-lang-en="Message the page — questions about routes and stays are welcome.">ทักมาได้ทางเพจ ยินดีตอบคำถามเรื่องเส้นทางและที่พัก</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p data-lang-th="© 2569 ปลายทาง สงวนลิขสิทธิ์" data-lang-en="© 2026 Plai Thang. All rights reserved.">© 2569 ปลายทาง สงวนลิขสิทธิ์</p>
+      <p data-lang-th="© 2569 ปลายทาง สงวนลิขสิทธิ์" data-lang-en="© 2026 Plaeytang. All rights reserved.">© 2569 ปลายทาง สงวนลิขสิทธิ์</p>
     </div>
   </div>
 </footer>
 
 <script>
-  lucide.createIcons();
-
+  window.addEventListener('DOMContentLoaded', function(){
+    if(window.lucide){ lucide.createIcons(); }
+  });
   // navbar shrink on scroll
   var navbar = document.getElementById('navbar');
   window.addEventListener('scroll', function(){
     if(window.scrollY > 40){ navbar.classList.add('scrolled'); }
     else{ navbar.classList.remove('scrolled'); }
-  });
+  }, {passive:true});
 
   // hamburger toggle
   var hamburger = document.getElementById('hamburger');
   var mobileMenu = document.getElementById('mobileMenu');
+  function syncExpanded(){
+    hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('open') ? 'true' : 'false');
+  }
   hamburger.addEventListener('click', function(){
     mobileMenu.classList.toggle('open');
+    syncExpanded();
   });
   mobileMenu.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click', function(){ mobileMenu.classList.remove('open'); });
+    a.addEventListener('click', function(){ mobileMenu.classList.remove('open'); syncExpanded(); });
   });
 
   // scroll reveal
@@ -760,7 +770,31 @@
 </script>
 
 <script>
-(function(){var K='site-lang',L=localStorage.getItem(K)||'th';function S(l){L=l;localStorage.setItem(K,l);document.documentElement.lang=l;document.querySelectorAll('[data-lang-th]').forEach(function(e){var t=e.getAttribute('data-lang-'+l);if(t!==null){if(/[<&]/.test(t)){e.innerHTML=t}else{e.textContent=t}}});var lb=document.querySelector('.lang-sw__label');if(lb){lb.textContent=l.toUpperCase()}}var sw=document.querySelector('.lang-sw');if(sw){sw.addEventListener('click',function(){S(L==='th'?'en':'th')});sw.style.cursor='pointer'}if(L!=='th'){S(L)}})();
+(function(){
+  var K='site-lang';
+  function read(){try{return localStorage.getItem(K)}catch(e){return null}}
+  function write(l){try{localStorage.setItem(K,l)}catch(e){}}
+  var L=read()||'th';
+  function apply(l){
+    L=l;write(l);
+    document.documentElement.lang=l;
+    document.querySelectorAll('[data-lang-th]').forEach(function(e){
+      var t=e.getAttribute('data-lang-'+l);
+      if(t===null){return}
+      if(/[<&]/.test(t)){e.innerHTML=t}else{e.textContent=t}
+    });
+    var label=document.querySelector('.lang-sw__label');
+    if(label){label.textContent=l.toUpperCase()}
+  }
+  var sw=document.querySelector('.lang-sw');
+  if(sw){
+    sw.addEventListener('click',function(){apply(L==='th'?'en':'th')});
+    sw.addEventListener('keydown',function(ev){
+      if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();apply(L==='th'?'en':'th')}
+    });
+  }
+  if(L!=='th'){apply(L)}
+})();
 </script>
 </body>
 </html>
