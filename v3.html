@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ปลายทาง — รีวิวร้านอาหารและที่พักฉบับจัดเต็ม</title>
+<meta name="description" content="ปลายทาง (Plai Thang) บล็อกรีวิวร้านอาหารและที่พักสไตล์จัดเต็ม สีสันจี๊ดจ๊าด พาไปทุกปลายทางที่ใช่">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0"></script>
+<style>
+  :root{
+    --background:#F7F4EC;
+    --card:#FFFFFF;
+    --bg-accent:#0B6E8C;
+    --foreground:#0A2E38;
+    --muted:#5B7B85;
+    --border:#CFE0DF;
+    --primary:#0B6E8C;
+    --secondary:#F2A93B;
+    --accent:#D9432A;
+    --font-heading:'Kanit', sans-serif;
+    --font-body:'Sarabun', sans-serif;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    background:var(--background);
+    color:var(--foreground);
+    line-height:1.8;
+    word-break:break-word;
+    overflow-wrap:break-word;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; height:auto; display:block;}
+  a{text-decoration:none; color:inherit;}
+  ul{list-style:none;}
+
+  h1,h2,h3,h4{
+    font-family:var(--font-heading);
+    font-weight:800;
+    text-transform:uppercase;
+    line-height:1.5;
+    letter-spacing:0;
+  }
+  .en-tight{letter-spacing:0.03em;}
+
+  .wrap{max-width:1200px; margin:0 auto; padding:0 20px;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    background:transparent;
+    transition:background .35s ease, box-shadow .35s ease, padding .35s ease;
+    padding:18px 0;
+  }
+  header.scrolled{
+    background:var(--bone,var(--background));
+    background:rgba(247,244,236,0.96);
+    box-shadow:0 4px 18px rgba(10,46,56,0.12);
+    padding:10px 0;
+  }
+  nav{display:flex; align-items:center; justify-content:space-between;}
+  .logo{
+    font-family:var(--font-heading);
+    font-weight:900;
+    font-size:1.6rem;
+    letter-spacing:0.02em;
+    color:var(--primary);
+    text-transform:uppercase;
+  }
+  .logo span{color:var(--accent);}
+  .nav-links{display:none; align-items:center; gap:28px;}
+  .nav-links a{
+    font-weight:600; font-size:0.98rem; padding:8px 2px;
+    position:relative; color:var(--foreground);
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:3px;
+    background:var(--accent); transition:width .3s ease; border-radius:3px;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    background:var(--accent); color:var(--card); padding:10px 22px; border-radius:999px;
+    font-weight:700; font-size:0.95rem;
+  }
+  .lang-sw{
+    display:flex; align-items:center; gap:5px; font-size:0.8em;
+    padding:8px 10px; border-radius:999px; border:2px solid var(--primary);
+    color:var(--primary); font-weight:700; min-height:32px;
+    background:rgba(255,255,255,0.6);
+  }
+  header.scrolled .lang-sw{background:var(--card);}
+  .nav-right{display:flex; align-items:center; gap:14px;}
+  .hamburger{
+    display:flex; flex-direction:column; gap:5px; background:none; border:none;
+    cursor:pointer; padding:10px; z-index:1100;
+  }
+  .hamburger span{width:26px; height:3px; background:var(--primary); border-radius:3px; transition:all .3s ease;}
+  .hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+
+  .mobile-menu{
+    position:fixed; top:0; right:0; height:100vh; width:78%; max-width:320px;
+    background:var(--primary); z-index:1050; padding:100px 32px 40px;
+    transform:translateX(100%); transition:transform .4s ease;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .mobile-menu.open{transform:translateX(0);}
+  .mobile-menu a{
+    color:var(--card); font-family:var(--font-heading); text-transform:uppercase;
+    font-weight:700; font-size:1.3rem; padding:14px 4px; border-bottom:1px solid rgba(255,255,255,0.2);
+  }
+  .menu-overlay{
+    position:fixed; inset:0; background:rgba(10,46,56,0.5); z-index:1040;
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .menu-overlay.open{opacity:1; pointer-events:auto;}
+
+  @media(min-width:900px){
+    .nav-links{display:flex;}
+    .hamburger{display:none;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:var(--primary);
+    color:var(--card);
+    padding:150px 0 110px;
+    overflow:visible;
+    clip-path:polygon(0 0, 100% 0, 100% 92%, 0 100%);
+  }
+  .hero .wrap{display:grid; grid-template-columns:1fr; gap:40px; align-items:center;}
+  .hero-tag{
+    display:inline-block; background:var(--secondary); color:var(--foreground);
+    font-weight:700; padding:0.5em 1.1em; border-radius:999px; font-size:0.85rem;
+    margin-bottom:22px; transform:rotate(-3deg);
+  }
+  .hero h1{
+    font-size:2.6rem; color:var(--card); padding-top:8px;
+  }
+  .hero h1 .hl{color:var(--secondary);}
+  .hero p{
+    font-size:1.1rem; margin-top:22px; max-width:520px; color:rgba(247,244,236,0.85);
+  }
+  .hero-actions{display:flex; flex-wrap:wrap; gap:16px; margin-top:34px;}
+  .btn{
+    font-family:var(--font-heading); text-transform:uppercase; font-weight:700;
+    padding:0.95em 1.8em; border-radius:16px; display:inline-flex; align-items:center;
+    gap:10px; font-size:0.95rem; min-height:44px; border:3px solid transparent;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+    cursor:pointer;
+  }
+  .btn-primary{background:var(--accent); color:var(--card); box-shadow:6px 6px 0 rgba(0,0,0,0.18);}
+  .btn-primary:hover{transform:translate(-3px,-3px); box-shadow:9px 9px 0 rgba(0,0,0,0.22);}
+  .btn-outline{background:transparent; color:var(--card); border-color:var(--card);}
+  .btn-outline:hover{background:var(--card); color:var(--primary);}
+
+  .hero-photo-grid{
+    position:relative; display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  }
+  .hero-photo-grid img{
+    border-radius:26px; border:5px solid var(--secondary);
+    box-shadow:8px 8px 0 rgba(10,46,56,0.35);
+    object-fit:cover; width:100%; height:100%;
+  }
+  .hero-photo-grid .tall{grid-row:span 2; height:100%;}
+  .hero-photo-grid img:nth-child(1){height:220px;}
+  .hero-photo-grid img:nth-child(3){height:220px;}
+
+  @media(min-width:900px){
+    .hero{padding:190px 0 150px;}
+    .hero .wrap{grid-template-columns:1.05fr 0.95fr;}
+    .hero h1{font-size:3.8rem;}
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{padding:90px 0;}
+  .section-head{margin-bottom:48px; max-width:700px;}
+  .kicker{
+    display:inline-block; font-family:var(--font-heading); font-weight:700;
+    color:var(--accent); font-size:0.85rem; text-transform:uppercase;
+    background:var(--card); border:2px solid var(--accent); border-radius:999px;
+    padding:0.4em 1em; margin-bottom:18px; transform:rotate(-2deg);
+  }
+  .section-head h2{font-size:2rem; color:var(--foreground); padding-top:6px;}
+  .section-head p{color:var(--muted); margin-top:16px; font-size:1.05rem;}
+
+  /* ---------- BANNER STRIP ---------- */
+  .banner-strip{
+    background:var(--foreground); color:var(--card); padding:16px 0; overflow:hidden;
+  }
+  .marquee{display:flex; gap:0; white-space:nowrap; width:max-content; animation:scroll-left 26s linear infinite;}
+  .marquee span{
+    font-family:var(--font-heading); text-transform:uppercase; font-weight:700;
+    font-size:1.1rem; padding:0 28px; display:flex; align-items:center; gap:12px;
+  }
+  .marquee span i{color:var(--secondary);}
+  @keyframes scroll-left{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+
+  /* ---------- WHAT WE DO / STEPS ---------- */
+  .steps{background:var(--bg-accent); color:var(--card); clip-path:polygon(0 4%, 100% 0, 100% 100%, 0 100%);}
+  .steps .section-head h2, .steps .kicker{color:var(--card);}
+  .steps .kicker{background:transparent; border-color:var(--card);}
+  .steps .section-head p{color:rgba(247,244,236,0.8);}
+  .step-grid{display:grid; grid-template-columns:1fr; gap:22px;}
+  .step-card{
+    background:rgba(255,255,255,0.08); border:2px solid rgba(255,255,255,0.35);
+    border-radius:22px; padding:28px; backdrop-filter:blur(4px);
+    transition:transform .35s ease, background .35s ease;
+  }
+  .step-card:hover{transform:translateY(-6px); background:rgba(255,255,255,0.16);}
+  .step-num{
+    font-family:var(--font-heading); font-weight:900; font-size:2.6rem; color:var(--secondary);
+    line-height:1;
+  }
+  .step-card h3{font-size:1.2rem; color:var(--card); margin-top:12px;}
+  .step-card p{color:rgba(247,244,236,0.8); margin-top:10px; font-size:0.98rem;}
+  @media(min-width:768px){
+    .step-grid{grid-template-columns:repeat(4,1fr);}
+  }
+
+  /* ---------- PHOTO CARD GRID (reviews) ---------- */
+  .card-grid{display:grid; grid-template-columns:1fr; gap:26px;}
+  .review-card{
+    background:var(--card); border-radius:28px; overflow:visible;
+    border:3px solid var(--foreground); box-shadow:8px 8px 0 var(--primary);
+    transition:transform .35s ease, box-shadow .35s ease;
+    display:flex; flex-direction:column;
+  }
+  .review-card:hover{transform:translate(-4px,-8px); box-shadow:12px 14px 0 var(--primary);}
+  .review-card .photo-wrap{
+    border-radius:24px 24px 0 0; overflow:hidden; height:230px; position:relative;
+    border-bottom:3px solid var(--foreground);
+  }
+  .review-card .photo-wrap img{width:100%; height:100%; object-fit:cover; transition:transform .5s ease;}
+  .review-card:hover .photo-wrap img{transform:scale(1.08);}
+  .badge{
+    position:absolute; top:14px; left:14px; background:var(--secondary); color:var(--foreground);
+    font-family:var(--font-heading); font-weight:700; text-transform:uppercase; font-size:0.75rem;
+    padding:0.45em 0.9em; border-radius:999px; transform:rotate(-4deg);
+    box-shadow:2px 2px 0 rgba(0,0,0,0.2);
+  }
+  .review-card .body{padding:22px 22px 26px;}
+  .review-card h3{font-size:1.15rem; color:var(--foreground);}
+  .review-card .loc{
+    display:flex; align-items:center; gap:6px; color:var(--accent); font-weight:600;
+    font-size:0.88rem; margin-top:8px;
+  }
+  .review-card p.desc{color:var(--muted); margin-top:12px; font-size:0.95rem;}
+  .stars{display:flex; gap:4px; margin-top:14px; color:var(--secondary);}
+
+  @media(min-width:640px){
+    .card-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media(min-width:1024px){
+    .card-grid{grid-template-columns:repeat(3,1fr);}
+  }
+
+  /* ---------- ALTERNATING STORY ROWS ---------- */
+  .story-row{
+    display:grid; grid-template-columns:1fr; gap:30px; align-items:center;
+    padding:40px 0;
+  }
+  .story-row .img-block{position:relative;}
+  .story-row .img-block img{
+    border-radius:30px; border:5px solid var(--primary);
+    box-shadow:10px 10px 0 var(--secondary);
+  }
+  .story-row .stamp{
+    position:absolute; bottom:-18px; right:-14px; background:var(--accent); color:var(--card);
+    border-radius:50%; width:88px; height:88px; display:flex; align-items:center;
+    justify-content:center; text-align:center; font-family:var(--font-heading);
+    font-weight:700; font-size:0.78rem; text-transform:uppercase; line-height:1.3;
+    border:4px solid var(--background); transform:rotate(8deg);
+  }
+  .story-row h3{font-size:1.5rem; color:var(--foreground);}
+  .story-row p{color:var(--muted); margin-top:14px; font-size:1.02rem;}
+  .story-row ul{margin-top:18px; display:flex; flex-direction:column; gap:10px;}
+  .story-row ul li{display:flex; gap:10px; align-items:flex-start; font-size:0.98rem;}
+  .story-row ul li i{color:var(--primary); flex-shrink:0; margin-top:3px;}
+
+  @media(min-width:900px){
+    .story-row{grid-template-columns:1fr 1fr; gap:60px;}
+    .story-row.rev .img-block{order:2;}
+    .story-row.rev .text-block{order:1;}
+  }
+
+  /* ---------- STATS BANNER ---------- */
+  .stats-band{
+    background:var(--secondary); color:var(--foreground);
+    padding:50px 0; clip-path:polygon(0 0,100% 6%,100% 100%,0 94%);
+  }
+  .stats-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:28px; text-align:center;}
+  .stat-num{font-family:var(--font-heading); font-weight:900; font-size:2.4rem;}
+  .stat-label{font-weight:600; font-size:0.9rem; margin-top:6px; text-transform:uppercase;}
+  @media(min-width:768px){.stats-grid{grid-template-columns:repeat(4,1fr);}}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi-grid{display:grid; grid-template-columns:1fr; gap:24px;}
+  .testi-card{
+    background:var(--card); border-radius:24px; padding:28px; position:relative;
+    border:3px dashed var(--primary);
+  }
+  .testi-card i.quote-icon{color:var(--accent); width:32px; height:32px;}
+  .testi-card p{margin-top:16px; font-size:1rem; color:var(--foreground);}
+  .testi-person{display:flex; align-items:center; gap:12px; margin-top:20px;}
+  .testi-person img{width:52px; height:52px; border-radius:50%; object-fit:cover; border:3px solid var(--secondary);}
+  .testi-person .name{font-weight:700; font-family:var(--font-heading); font-size:0.95rem;}
+  .testi-person .role{color:var(--muted); font-size:0.85rem;}
+  @media(min-width:900px){.testi-grid{grid-template-columns:repeat(3,1fr);}}
+
+  /* ---------- CONTACT / CTA ---------- */
+  .contact-band{
+    background:var(--foreground); color:var(--card); padding:80px 0;
+    clip-path:polygon(0 6%, 100% 0, 100% 100%, 0 100%);
+  }
+  .contact-inner{display:grid; grid-template-columns:1fr; gap:40px;}
+  .contact-band h2{color:var(--card); font-size:2rem;}
+  .contact-band .kicker{background:transparent; border-color:var(--secondary); color:var(--secondary);}
+  .contact-band p{color:rgba(247,244,236,0.75); margin-top:16px;}
+  .contact-form{display:flex; flex-direction:column; gap:14px;}
+  .contact-form input, .contact-form textarea{
+    width:100%; padding:14px 16px; border-radius:14px; border:2px solid rgba(255,255,255,0.25);
+    background:rgba(255,255,255,0.06); color:var(--card); font-family:var(--font-body); font-size:1rem;
+  }
+  .contact-form input::placeholder, .contact-form textarea::placeholder{color:rgba(247,244,236,0.5);}
+  .contact-form textarea{min-height:110px; resize:vertical;}
+  .contact-list{display:flex; flex-direction:column; gap:18px; margin-top:24px;}
+  .contact-list li{display:flex; gap:14px; align-items:center;}
+  .contact-list .icon-box{
+    background:var(--primary); width:46px; height:46px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .social-row{display:flex; gap:12px; margin-top:26px;}
+  .social-row a{
+    width:44px; height:44px; border-radius:12px; border:2px solid var(--secondary);
+    display:flex; align-items:center; justify-content:center; transition:background .25s ease;
+  }
+  .social-row a:hover{background:var(--secondary); color:var(--foreground);}
+  @media(min-width:900px){.contact-inner{grid-template-columns:1fr 1fr;}}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--primary); color:rgba(247,244,236,0.85); padding:36px 0;}
+  .footer-inner{display:flex; flex-direction:column; gap:16px; align-items:center; text-align:center;}
+  .footer-inner .logo{color:var(--card);}
+  .footer-inner .logo span{color:var(--secondary);}
+  footer p{font-size:0.85rem;}
+  @media(min-width:768px){
+    .footer-inner{flex-direction:row; justify-content:space-between; text-align:left;}
+  }
+
+  /* ---------- reveal animation ---------- */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .6s ease-out, transform .6s ease-out;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap">
+    <nav>
+      <a href="#top" class="logo">PLAI<span>THANG</span></a>
+      <ul class="nav-links">
+        <li><a href="#reviews" data-lang-th="รีวิว" data-lang-en="Reviews">รีวิว</a></li>
+        <li><a href="#about" data-lang-th="เกี่ยวกับเรา" data-lang-en="About">เกี่ยวกับเรา</a></li>
+        <li><a href="#stories" data-lang-th="เรื่องเล่า" data-lang-en="Stories">เรื่องเล่า</a></li>
+        <li><a href="#testimonials" data-lang-th="รีวิวจากผู้อ่าน" data-lang-en="Feedback">รีวิวจากผู้อ่าน</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-sw"><i data-lucide="globe" width="14" height="14"></i><span class="lang-sw__label">TH</span></div>
+        <a href="#contact" class="nav-cta" data-lang-th="ติดต่อเรา" data-lang-en="Contact Us" style="display:none;" id="navCtaDesktop"></a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#reviews" data-lang-th="รีวิว" data-lang-en="Reviews">รีวิว</a>
+  <a href="#about" data-lang-th="เกี่ยวกับเรา" data-lang-en="About">เกี่ยวกับเรา</a>
+  <a href="#stories" data-lang-th="เรื่องเล่า" data-lang-en="Stories">เรื่องเล่า</a>
+  <a href="#testimonials" data-lang-th="รีวิวจากผู้อ่าน" data-lang-en="Feedback">รีวิวจากผู้อ่าน</a>
+  <a href="#contact" data-lang-th="ติดต่อเรา" data-lang-en="Contact Us">ติดต่อเรา</a>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <span class="hero-tag" data-lang-th="บล็อกรีวิวสายกิน-สายเที่ยว" data-lang-en="Eat &amp; Stay Review Blog">บล็อกรีวิวสายกิน-สายเที่ยว</span>
+        <h1 data-lang-th="พาไปทุก<br><span class='hl'>ปลายทาง</span>ที่ใช่" data-lang-en="EVERY <span class='hl'>DESTINATION</span><br>DONE RIGHT">พาไปทุก<br><span class="hl">ปลายทาง</span>ที่ใช่</h1>
+        <p data-lang-th="รีวิวร้านอาหารและที่พักแบบจัดเต็ม ไม่มีสปอนเซอร์กั๊กความจริง กินจริง นอนจริง เล่าจริงทุกซอกทุกมุมของประเทศไทย" data-lang-en="Real reviews of restaurants and accommodations — no sponsored fluff. We eat there, we sleep there, and we tell you the whole truth from every corner of Thailand.">รีวิวร้านอาหารและที่พักแบบจัดเต็ม ไม่มีสปอนเซอร์กั๊กความจริง กินจริง นอนจริง เล่าจริงทุกซอกทุกมุมของประเทศไทย</p>
+        <div class="hero-actions">
+          <a href="#reviews" class="btn btn-primary"><i data-lucide="compass"></i><span data-lang-th="ดูรีวิวล่าสุด" data-lang-en="Latest Reviews">ดูรีวิวล่าสุด</span></a>
+          <a href="#contact" class="btn btn-outline"><i data-lucide="mail"></i><span data-lang-th="ทักมาคุย" data-lang-en="Say Hello">ทักมาคุย</span></a>
+        </div>
+      </div>
+      <div class="hero-photo-grid">
+        <img src="https://images.unsplash.com/photo-1733758168272-ee6c9ce4310d?w=500&h=400&fit=crop" alt="ตลาดอาหารริมทางยามค่ำคืน">
+        <img class="tall" src="https://images.unsplash.com/photo-1683263430537-6b31f3596357?w=500&h=560&fit=crop" alt="เก้าอี้สระน้ำรีสอร์ท">
+        <img src="https://images.unsplash.com/photo-1758346972070-547c770d96ab?w=500&h=400&fit=crop" alt="แผงลอยไม้ปิ้งริมทาง">
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE BANNER -->
+  <div class="banner-strip">
+    <div class="marquee">
+      <span><i data-lucide="utensils-crossed"></i> <span data-lang-th="รีวิวร้านอาหาร" data-lang-en="RESTAURANT REVIEWS">รีวิวร้านอาหาร</span></span>
+      <span><i data-lucide="bed-double"></i> <span data-lang-th="รีวิวที่พัก" data-lang-en="STAY REVIEWS">รีวิวที่พัก</span></span>
+      <span><i data-lucide="map-pin"></i> <span data-lang-th="ทั่วไทย" data-lang-en="ACROSS THAILAND">ทั่วไทย</span></span>
+      <span><i data-lucide="camera"></i> <span data-lang-th="ภาพจริงทุกช็อต" data-lang-en="REAL PHOTOS ONLY">ภาพจริงทุกช็อต</span></span>
+      <span><i data-lucide="utensils-crossed"></i> <span data-lang-th="รีวิวร้านอาหาร" data-lang-en="RESTAURANT REVIEWS">รีวิวร้านอาหาร</span></span>
+      <span><i data-lucide="bed-double"></i> <span data-lang-th="รีวิวที่พัก" data-lang-en="STAY REVIEWS">รีวิวที่พัก</span></span>
+      <span><i data-lucide="map-pin"></i> <span data-lang-th="ทั่วไทย" data-lang-en="ACROSS THAILAND">ทั่วไทย</span></span>
+      <span><i data-lucide="camera"></i> <span data-lang-th="ภาพจริงทุกช็อต" data-lang-en="REAL PHOTOS ONLY">ภาพจริงทุกช็อต</span></span>
+    </div>
+  </div>
+
+  <!-- STEPS / WHAT WE DO -->
+  <section class="steps section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker" data-lang-th="วิธีทำงานของเรา" data-lang-en="HOW WE WORK">วิธีทำงานของเรา</span>
+        <h2 data-lang-th="รีวิวแบบปลายทาง ทำยังไง" data-lang-en="HOW WE REVIEW">รีวิวแบบปลายทาง ทำยังไง</h2>
+        <p data-lang-th="ทุกรีวิวผ่าน 4 ขั้นตอน เพื่อให้คุณมั่นใจได้ว่าทุกคำที่เขียนคือของจริง" data-lang-en="Every review goes through 4 steps so you know every word is genuine.">ทุกรีวิวผ่าน 4 ขั้นตอน เพื่อให้คุณมั่นใจได้ว่าทุกคำที่เขียนคือของจริง</p>
+      </div>
+      <div class="step-grid">
+        <div class="step-card reveal">
+          <div class="step-num">01</div>
+          <h3 data-lang-th="สืบหาปลายทาง" data-lang-en="SCOUT">สืบหาปลายทาง</h3>
+          <p data-lang-th="คัดร้านและที่พักจากรีวิวคนในพื้นที่ ไม่ใช่แค่กระแสในโซเชียล" data-lang-en="We pick spots from local recommendations, not just social media hype.">คัดร้านและที่พักจากรีวิวคนในพื้นที่ ไม่ใช่แค่กระแสในโซเชียล</p>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">02</div>
+          <h3 data-lang-th="ลงพื้นที่จริง" data-lang-en="VISIT">ลงพื้นที่จริง</h3>
+          <p data-lang-th="ควักเงินจ่ายเอง กินเอง นอนเอง ไม่รับตังค์แลกดาว" data-lang-en="We pay out of our own pocket, eat and sleep there ourselves — no paid ratings.">ควักเงินจ่ายเอง กินเอง นอนเอง ไม่รับตังค์แลกดาว</p>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">03</div>
+          <h3 data-lang-th="ถ่ายทุกมุม" data-lang-en="SHOOT">ถ่ายทุกมุม</h3>
+          <p data-lang-th="เก็บภาพจริงทุกเมนู ทุกห้อง ไม่แต่งภาพให้เกินจริง" data-lang-en="Real photos of every dish, every room — no misleading edits.">เก็บภาพจริงทุกเมนู ทุกห้อง ไม่แต่งภาพให้เกินจริง</p>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">04</div>
+          <h3 data-lang-th="เล่าให้ฟัง" data-lang-en="TELL">เล่าให้ฟัง</h3>
+          <p data-lang-th="สรุปข้อดีข้อเสียตรงไปตรงมา พร้อมราคาที่ต้องรู้ก่อนไป" data-lang-en="Honest pros and cons, plus the prices you need to know before you go.">สรุปข้อดีข้อเสียตรงไปตรงมา พร้อมราคาที่ต้องรู้ก่อนไป</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS GRID -->
+  <section class="section" id="reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker" data-lang-th="รีวิวเด่นประจำเดือน" data-lang-en="FEATURED THIS MONTH">รีวิวเด่นประจำเดือน</span>
+        <h2 data-lang-th="ร้านเด็ด ที่พักเด่น" data-lang-en="TOP PICKS RIGHT NOW">ร้านเด็ด ที่พักเด่น</h2>
+        <p data-lang-th="รวมมิตรร้านอาหารและที่พักที่เราไปมาแล้วบอกว่า 'ต้องไปอีก'" data-lang-en="A mix of restaurants and stays we've visited and would happily go back to.">รวมมิตรร้านอาหารและที่พักที่เราไปมาแล้วบอกว่า "ต้องไปอีก"</p>
+      </div>
+      <div class="card-grid">
+
+        <div class="review-card reveal">
+          <div class="photo-wrap">
+            <img src="https://images.unsplash.com/photo-1758346972201-f8b5f851bc87?w=600&h=460&fit=crop" alt="แผงลอยขายอาหารริมทาง เชียงใหม่">
+            <span class="badge" data-lang-th="ของกิน" data-lang-en="FOOD">ของกิน</span>
+          </div>
+          <div class="body">
+            <h3 data-lang-th="ป้าแดง ตำนานส้มตำสายเหนือ" data-lang-en="Pa Daeng's Legendary Som Tum">ป้าแดง ตำนานส้มตำสายเหนือ</h3>
+            <div class="loc"><i data-lucide="map-pin" width="14" height="14"></i><span data-lang-th="เชียงใหม่" data-lang-en="Chiang Mai">เชียงใหม่</span></div>
+            <p class="desc" data-lang-th="ตำมือแซ่บจัดจ้าน วัตถุดิบสดใหม่ทุกวัน ราคาเบาๆ หลักสิบ" data-lang-en="Hand-pounded papaya salad, fiery and fresh daily, priced in the tens of baht.">ตำมือแซ่บจัดจ้าน วัตถุดิบสดใหม่ทุกวัน ราคาเบาๆ หลักสิบ</p>
+            <div class="stars"><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i></div>
+          </div>
+        </div>
+
+        <div class="review-card reveal">
+          <div class="photo-wrap">
+            <img src="https://images.unsplash.com/photo-1683263430537-6b31f3596357?w=600&h=460&fit=crop" alt="สระว่ายน้ำรีสอร์ทเกาะสมุย">
+            <span class="badge" data-lang-th="ที่พัก" data-lang-en="STAY">ที่พัก</span>
+          </div>
+          <div class="body">
+            <h3 data-lang-th="บ้านทะเลใส บูทีคริมหาด" data-lang-en="Baan Talay Sai Beach Boutique">บ้านทะเลใส บูทีคริมหาด</h3>
+            <div class="loc"><i data-lucide="map-pin" width="14" height="14"></i><span data-lang-th="เกาะสมุย" data-lang-en="Koh Samui">เกาะสมุย</span></div>
+            <p class="desc" data-lang-th="ห้องพักวิวทะเลชั้นเดียว บริการอบอุ่นแบบครอบครัว คุ้มราคาสุดๆ" data-lang-en="Single-story sea-view rooms with warm, family-style service — great value.">ห้องพักวิวทะเลชั้นเดียว บริการอบอุ่นแบบครอบครัว คุ้มราคาสุดๆ</p>
+            <div class="stars"><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star-half" width="16" height="16"></i></div>
+          </div>
+        </div>
+
+        <div class="review-card reveal">
+          <div class="photo-wrap">
+            <img src="https://images.unsplash.com/photo-1764414240760-61c181171a45?w=600&h=460&fit=crop" alt="ร้านอาหารกลางแจ้งยามค่ำคืน">
+            <span class="badge" data-lang-th="ของกิน" data-lang-en="FOOD">ของกิน</span>
+          </div>
+          <div class="body">
+            <h3 data-lang-th="ครัวคุณยาย บรรยากาศริมคลอง" data-lang-en="Khrua Khun Yai Canal-side Kitchen">ครัวคุณยาย บรรยากาศริมคลอง</h3>
+            <div class="loc"><i data-lucide="map-pin" width="14" height="14"></i><span data-lang-th="อยุธยา" data-lang-en="Ayutthaya">อยุธยา</span></div>
+            <p class="desc" data-lang-th="อาหารไทยโบราณสูตรตกทอด นั่งชิลริมน้ำ ยลแสงไฟยามเย็น" data-lang-en="Heirloom Thai recipes served by the river — perfect for a golden-hour dinner.">อาหารไทยโบราณสูตรตกทอด นั่งชิลริมน้ำ ยลแสงไฟยามเย็น</p>
+            <div class="stars"><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i></div>
+          </div>
+        </div>
+
+        <div class="review-card reveal">
+          <div class="photo-wrap">
+            <img src="https://images.unsplash.com/photo-1562835155-1fa627c69744?w=600&h=460&fit=crop" alt="คาเฟ่บรรยากาศดี">
+            <span class="badge" data-lang-th="คาเฟ่" data-lang-en="CAFE">คาเฟ่</span>
+          </div>
+          <div class="body">
+            <h3 data-lang-th="ร้อยฝัน คาเฟ่ในตึกเก่า" data-lang-en="Roi Fun Old Building Café">ร้อยฝัน คาเฟ่ในตึกเก่า</h3>
+            <div class="loc"><i data-lucide="map-pin" width="14" height="14"></i><span data-lang-th="กรุงเทพฯ" data-lang-en="Bangkok">กรุงเทพฯ</span></div>
+            <p class="desc" data-lang-th="ตกแต่งสไตล์วินเทจ กาแฟคั่วเข้มหอมกรุ่น มุมถ่ายรูปเพียบ" data-lang-en="Vintage decor, rich dark-roast coffee, and countless photo-worthy corners.">ตกแต่งสไตล์วินเทจ กาแฟคั่วเข้มหอมกรุ่น มุมถ่ายรูปเพียบ</p>
+            <div class="stars"><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star-half" width="16" height="16"></i></div>
+          </div>
+        </div>
+
+        <div class="review-card reveal">
+          <div class="photo-wrap">
+            <img src="https://images.unsplash.com/photo-1560409471-2a9d4f804280?w=600&h=460&fit=crop" alt="ที่พักริมทะเลเกาะลันตา">
+            <span class="badge" data-lang-th="ที่พัก" data-lang-en="STAY">ที่พัก</span>
+          </div>
+          <div class="body">
+            <h3 data-lang-th="ลันตาฮิลล์ วิลลาริมผา" data-lang-en="Lanta Hill Cliffside Villas">ลันตาฮิลล์ วิลลาริมผา</h3>
+            <div class="loc"><i data-lucide="map-pin" width="14" height="14"></i><span data-lang-th="เกาะลันตา" data-lang-en="Koh Lanta">เกาะลันตา</span></div>
+            <p class="desc" data-lang-th="วิลลาส่วนตัวมองเห็นพระอาทิตย์ตกเต็มตา เงียบสงบเหมาะพักผ่อน" data-lang-en="Private villas with unobstructed sunset views — quiet and ideal for unwinding.">วิลลาส่วนตัวมองเห็นพระอาทิตย์ตกเต็มตา เงียบสงบเหมาะพักผ่อน</p>
+            <div class="stars"><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i></div>
+          </div>
+        </div>
+
+        <div class="review-card reveal">
+          <div class="photo-wrap">
+            <img src="https://images.unsplash.com/photo-1691680836639-92a1afff6ffc?w=600&h=460&fit=crop" alt="ของหวานไทยจานสวย">
+            <span class="badge" data-lang-th="ของหวาน" data-lang-en="DESSERT">ของหวาน</span>
+          </div>
+          <div class="body">
+            <h3 data-lang-th="สวนขนมไทย โบราณแท้" data-lang-en="Suan Khanom Thai — Old-Style Sweets">สวนขนมไทย โบราณแท้</h3>
+            <div class="loc"><i data-lucide="map-pin" width="14" height="14"></i><span data-lang-th="นนทบุรี" data-lang-en="Nonthaburi">นนทบุรี</span></div>
+            <p class="desc" data-lang-th="ขนมไทยหน้าตาน่ารัก รสชาติดั้งเดิม ทำสดใหม่ทุกเช้า" data-lang-en="Adorable traditional Thai sweets, made fresh every morning.">ขนมไทยหน้าตาน่ารัก รสชาติดั้งเดิม ทำสดใหม่ทุกเช้า</p>
+            <div class="stars"><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star" width="16" height="16"></i><i data-lucide="star-half" width="16" height="16"></i></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / STORY ROWS -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker" data-lang-th="รู้จักเรา" data-lang-en="GET TO KNOW US">รู้จักเรา</span>
+        <h2 data-lang-th="ใครคือปลายทาง" data-lang-en="WHO IS PLAI THANG">ใครคือปลายทาง</h2>
+      </div>
+
+      <div class="story-row reveal">
+        <div class="img-block">
+          <img src="https://images.unsplash.com/photo-1621762003338-b8ebd2c87d2e?w=600&h=520&fit=crop" alt="นักเดินทางถือเป้เดินทาง">
+          <div class="stamp" data-lang-th="ตั้งแต่ 2019" data-lang-en="SINCE 2019">ตั้งแต่ 2019</div>
+        </div>
+        <div class="text-block">
+          <h3 data-lang-th="จุดเริ่มต้นจากความหิว" data-lang-en="It Started With Hunger">จุดเริ่มต้นจากความหิว</h3>
+          <p data-lang-th="ปลายทางเริ่มจากบล็อกเล็กๆ ของคนชอบกินชอบเที่ยว ที่เบื่อรีวิวสวยหรูแต่ไม่ตรงปก จึงตัดสินใจลงพื้นที่เอง จ่ายเอง เพื่อเล่าเรื่องจริงให้คนอ่านได้ตัดสินใจแบบไม่ต้องเสี่ยงดวง" data-lang-en="Plai Thang began as a small blog by food-and-travel lovers tired of pretty reviews that didn't match reality. So we started paying our own way and visiting in person — to tell readers the real story so they never have to gamble on a bad trip.">ปลายทางเริ่มจากบล็อกเล็กๆ ของคนชอบกินชอบเที่ยว ที่เบื่อรีวิวสวยหรูแต่ไม่ตรงปก จึงตัดสินใจลงพื้นที่เอง จ่ายเอง เพื่อเล่าเรื่องจริงให้คนอ่านได้ตัดสินใจแบบไม่ต้องเสี่ยงดวง</p>
+          <ul>
+            <li><i data-lucide="check-circle"></i><span data-lang-th="รีวิวมากกว่า 500 ร้าน/ที่พักทั่วไทย" data-lang-en="500+ restaurants and stays reviewed across Thailand">รีวิวมากกว่า 500 ร้าน/ที่พักทั่วไทย</span></li>
+            <li><i data-lucide="check-circle"></i><span data-lang-th="ไม่รับรีวิวจ้าง ไม่การันตีดาว" data-lang-en="No paid reviews, no guaranteed ratings">ไม่รับรีวิวจ้าง ไม่การันตีดาว</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="story-row rev reveal">
+        <div class="img-block">
+          <img src="https://images.unsplash.com/photo-1758346972070-547c770d96ab?w=600&h=520&fit=crop" alt="แผงขายอาหารปิ้งย่างริมทาง">
+          <div class="stamp" data-lang-th="200+ เมือง" data-lang-en="200+ CITIES">200+ เมือง</div>
+        </div>
+        <div class="text-block">
+          <h3 data-lang-th="มาตรฐานที่เราไม่ยอมลด" data-lang-en="Standards We Won't Compromise">มาตรฐานที่เราไม่ยอมลด</h3>
+          <p data-lang-th="ทุกรีวิวต้องผ่านเกณฑ์ 3 ข้อ: รสชาติ ความคุ้มค่า และความประทับใจของบริการ ถ้าไม่ผ่านทั้ง 3 ข้อเราจะบอกตรงๆ ว่าทำไมถึงไม่แนะนำ" data-lang-en="Every review must pass 3 criteria: taste, value, and service quality. If it fails any one, we'll tell you plainly why we can't recommend it.">ทุกรีวิวต้องผ่านเกณฑ์ 3 ข้อ: รสชาติ ความคุ้มค่า และความประทับใจของบริการ ถ้าไม่ผ่านทั้ง 3 ข้อเราจะบอกตรงๆ ว่าทำไมถึงไม่แนะนำ</p>
+          <ul>
+            <li><i data-lucide="check-circle"></i><span data-lang-th="ทีมงานลงพื้นที่จริงทุกครั้ง" data-lang-en="Our team visits every location in person">ทีมงานลงพื้นที่จริงทุกครั้ง</span></li>
+            <li><i data-lucide="check-circle"></i><span data-lang-th="อัปเดตราคาและเมนูล่าสุดเสมอ" data-lang-en="Prices and menus kept up to date">อัปเดตราคาและเมนูล่าสุดเสมอ</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAND -->
+  <div class="stats-band">
+    <div class="wrap">
+      <div class="stats-grid">
+        <div class="reveal"><div class="stat-num">500+</div><div class="stat-label" data-lang-th="รีวิวทั้งหมด" data-lang-en="TOTAL REVIEWS">รีวิวทั้งหมด</div></div>
+        <div class="reveal"><div class="stat-num">200+</div><div class="stat-label" data-lang-th="เมืองที่ไปมา" data-lang-en="CITIES VISITED">เมืองที่ไปมา</div></div>
+        <div class="reveal"><div class="stat-num">6</div><div class="stat-label" data-lang-th="ปีที่เดินทาง" data-lang-en="YEARS ON THE ROAD">ปีที่เดินทาง</div></div>
+        <div class="reveal"><div class="stat-num">1.2M</div><div class="stat-label" data-lang-th="ผู้อ่านต่อเดือน" data-lang-en="MONTHLY READERS">ผู้อ่านต่อเดือน</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORIES / TIMELINE-ISH SECTION -->
+  <section class="section" id="stories">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker" data-lang-th="ซีรีส์เด่น" data-lang-en="FEATURED SERIES">ซีรีส์เด่น</span>
+        <h2 data-lang-th="เรื่องเล่าจากทริปยาว" data-lang-en="STORIES FROM THE ROAD">เรื่องเล่าจากทริปยาว</h2>
+        <p data-lang-th="นอกจากรีวิวสั้นๆ เรายังมีซีรีส์เล่าเรื่องเจาะลึกให้ตามอ่านแบบเพลินๆ" data-lang-en="Beyond quick reviews, we run deep-dive series for readers who want a longer story.">นอกจากรีวิวสั้นๆ เรายังมีซีรีส์เล่าเรื่องเจาะลึกให้ตามอ่านแบบเพลินๆ</p>
+      </div>
+      <div class="card-grid">
+        <div class="review-card reveal">
+          <div class="photo-wrap">
+            <img src="https://images.unsplash.com/photo-1587816340425-3f9fe56079dd?w=600&h=460&fit=crop" alt="ขนมไทยจานสวยงาม">
+            <span class="badge" data-lang-th="ซีรีส์" data-lang-en="SERIES">ซีรีส์</span>
+          </div>
+          <div class="body">
+            <h3 data-lang-th="ตามหาส้มตำเด็ดทั่วอีสาน" data-lang-en="The Great Isaan Som Tum Hunt">ตามหาส้มตำเด็ดทั่วอีสาน</h3>
+            <p class="desc" data-lang-th="10 ตอนจบ ตระเวนชิมส้มตำ 10 จังหวัด สรุปสูตรลับความแซ่บที่ต่างกัน" data-lang-en="A 10-part journey tasting Som Tum across 10 provinces — the secret to each region's unique kick.">10 ตอนจบ ตระเวนชิมส้มตำ 10 จังหวัด สรุปสูตรลับความแซ่บที่ต่างกัน</p>
+          </div>
+        </div>
+        <div class="review-card reveal">
+          <div class="photo-wrap">
+            <img src="https://images.unsplash.com/photo-1582652840955-5da18538b6dd?w=600&h=460&fit=crop" alt="รีสอร์ทริมทะเลมุมสูง">
+            <span class="badge" data-lang-th="ซีรีส์" data-lang-en="SERIES">ซีรีส์</span>
+          </div>
+          <div class="body">
+            <h3 data-lang-th="พักผ่อนงบน้อยริมทะเลใต้" data-lang-en="Budget Beach Escapes of the South">พักผ่อนงบน้อยริมทะเลใต้</h3>
+            <p class="desc" data-lang-th="รวมที่พักติดทะเลราคาต่ำกว่า 1,000 บาท/คืน ที่คุ้มค่าเกินราคา" data-lang-en="A curated list of beachfront stays under 1,000 baht/night that punch way above their price.">รวมที่พักติดทะเลราคาต่ำกว่า 1,000 บาท/คืน ที่คุ้มค่าเกินราคา</p>
+          </div>
+        </div>
+        <div class="review-card reveal">
+          <div class="photo-wrap">
+            <img src="https://images.unsplash.com/photo-1591985439444-8b5e36aa34c3?w=600&h=460&fit=crop" alt="มุมคาเฟ่บรรยากาศดี">
+            <span class="badge" data-lang-th="ซีรีส์" data-lang-en="SERIES">ซีรีส์</span>
+          </div>
+          <div class="body">
+            <h3 data-lang-th="คาเฟ่ลับในตรอกเก่าเมืองเก่า" data-lang-en="Hidden Cafés in Old Town Alleys">คาเฟ่ลับในตรอกเก่าเมืองเก่า</h3>
+            <p class="desc" data-lang-th="สำรวจคาเฟ่ในตึกเก่าที่นักท่องเที่ยวส่วนใหญ่มองข้าม" data-lang-en="Exploring old-building cafés that most tourists walk right past.">สำรวจคาเฟ่ในตึกเก่าที่นักท่องเที่ยวส่วนใหญ่มองข้าม</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section" id="testimonials" style="background:var(--card); position:relative;">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker" data-lang-th="เสียงจากผู้อ่าน" data-lang-en="READER VOICES">เสียงจากผู้อ่าน</span>
+        <h2 data-lang-th="เขาว่ากันยังไงบ้าง" data-lang-en="WHAT THEY'RE SAYING">เขาว่ากันยังไงบ้าง</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card reveal">
+          <i data-lucide="quote" class="quote-icon"></i>
+          <p data-lang-th="ตามรีวิวปลายทางไปกินมาแล้วไม่เคยพลาดสักร้าน ชอบตรงที่เขียนตรงไปตรงมาทั้งข้อดีข้อเสีย" data-lang-en="I've followed every Plai Thang restaurant recommendation and never been disappointed. I love how honest they are about both pros and cons.">ตามรีวิวปลายทางไปกินมาแล้วไม่เคยพลาดสักร้าน ชอบตรงที่เขียนตรงไปตรงมาทั้งข้อดีข้อเสีย</p>
+          <div class="testi-person">
+            <img src="https://images.unsplash.com/photo-1654935430468-2a22e8e33970?w=100&h=100&fit=crop" alt="ผู้อ่านชายยิ้ม">
+            <div><div class="name">คุณธีระ ส.</div><div class="role" data-lang-th="นักชิมประจำ" data-lang-en="Regular Foodie">นักชิมประจำ</div></div>
+          </div>
+        </div>
+        <div class="testi-card reveal">
+          <i data-lucide="quote" class="quote-icon"></i>
+          <p data-lang-th="จองที่พักตามรีวิวปลายทางทุกทริป เพราะเชื่อว่าภาพกับของจริงจะไม่ต่างกัน แนะนำเลย" data-lang-en="I book every stay based on Plai Thang's reviews because I trust the photos will match reality. Highly recommend.">จองที่พักตามรีวิวปลายทางทุกทริป เพราะเชื่อว่าภาพกับของจริงจะไม่ต่างกัน แนะนำเลย</p>
+          <div class="testi-person">
+            <img src="https://images.unsplash.com/photo-1621762003338-b8ebd2c87d2e?w=100&h=100&fit=crop" alt="ผู้อ่านชายยืน">
+            <div><div class="name">คุณปวีณา ก.</div><div class="role" data-lang-th="สายเที่ยวครอบครัว" data-lang-en="Family Traveler">สายเที่ยวครอบครัว</div></div>
+          </div>
+        </div>
+        <div class="testi-card reveal">
+          <i data-lucide="quote" class="quote-icon"></i>
+          <p data-lang-th="ชอบสไตล์การเล่าเรื่องมาก อ่านสนุก ได้ข้อมูลครบ ไม่ต้องไปหาที่อื่นต่อ" data-lang-en="I love the storytelling style — fun to read and packed with everything I need, no need to search elsewhere.">ชอบสไตล์การเล่าเรื่องมาก อ่านสนุก ได้ข้อมูลครบ ไม่ต้องไปหาที่อื่นต่อ</p>
+          <div class="testi-person">
+            <img src="https://images.unsplash.com/photo-1494194069000-cb794f31d82c?w=100&h=100&fit=crop" alt="ผู้อ่านหญิง">
+            <div><div class="name">คุณมนัสวี พ.</div><div class="role" data-lang-th="บล็อกเกอร์เพื่อนบ้าน" data-lang-en="Fellow Blogger">บล็อกเกอร์เพื่อนบ้าน</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-band" id="contact">
+    <div class="wrap contact-inner">
+      <div class="reveal">
+        <span class="kicker" data-lang-th="ติดต่อเรา" data-lang-en="GET IN TOUCH">ติดต่อเรา</span>
+        <h2 data-lang-th="อยากให้เราไปรีวิว หรือแค่ทักทาย" data-lang-en="WANT US TO REVIEW YOU, OR JUST SAY HI?">อยากให้เราไปรีวิว หรือแค่ทักทาย</h2>
+        <p data-lang-th="ส่งข้อความหาเราได้เลย ไม่ว่าจะแนะนำร้าน ที่พัก หรือชวนไปกินด้วยกัน เรายินดีฟังทุกเรื่อง" data-lang-en="Send us a message — whether it's a restaurant tip, a hotel suggestion, or an invite to eat together, we'd love to hear it.">ส่งข้อความหาเราได้เลย ไม่ว่าจะแนะนำร้าน ที่พัก หรือชวนไปกินด้วยกัน เรายินดีฟังทุกเรื่อง</p>
+        <ul class="contact-list">
+          <li><div class="icon-box"><i data-lucide="mail"></i></div><span>hello@plaithang.com</span></li>
+          <li><div class="icon-box"><i data-lucide="phone"></i></div><span>02-345-6789</span></li>
+          <li><div class="icon-box"><i data-lucide="map-pin"></i></div><span data-lang-th="กรุงเทพมหานคร ประเทศไทย" data-lang-en="Bangkok, Thailand">กรุงเทพมหานคร ประเทศไทย</span></li>
+        </ul>
+        <div class="social-row">
+          <a href="#" aria-label="Facebook"><i data-lucide="facebook" width="18" height="18"></i></a>
+          <a href="#" aria-label="Instagram"><i data-lucide="instagram" width="18" height="18"></i></a>
+          <a href="#" aria-label="Youtube"><i data-lucide="youtube" width="18" height="18"></i></a>
+          <a href="#" aria-label="TikTok"><i data-lucide="music-2" width="18" height="18"></i></a>
+        </div>
+      </div>
+      <form class="contact-form reveal" onsubmit="event.preventDefault(); this.reset(); alert('ขอบคุณสำหรับข้อความครับ!');">
+        <input type="text" data-lang-th="ชื่อของคุณ" data-lang-en="Your Name" placeholder="ชื่อของคุณ" id="nameInput" required>
+        <input type="email" placeholder="you@email.com" required>
+        <textarea data-lang-th="อยากเล่าอะไรให้เราฟังบ้าง..." data-lang-en="What would you like to tell us..." placeholder="อยากเล่าอะไรให้เราฟังบ้าง..." id="msgInput"></textarea>
+        <button type="submit" class="btn btn-primary" style="justify-content:center;"><i data-lucide="send"></i><span data-lang-th="ส่งข้อความ" data-lang-en="Send Message">ส่งข้อความ</span></button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <a href="#top" class="logo">PLAI<span>THANG</span></a>
+      <p style="margin-top:8px;" data-lang-th="© 2569 ปลายทาง สงวนลิขสิทธิ์" data-lang-en="© 2026 Plai Thang. All rights reserved.">© 2569 ปลายทาง สงวนลิขสิทธิ์</p>
+    </div>
+    <p data-lang-th="ทำด้วยความหิวและความรักในการเดินทาง" data-lang-en="Made with hunger and a love of the open road.">ทำด้วยความหิวและความรักในการเดินทาง</p>
+  </div>
+</footer>
+
+<script>
+  // Update placeholders/values on input fields when language switches (data-lang attrs already handle labels)
+  document.addEventListener('DOMContentLoaded', function(){
+    var nameInput = document.getElementById('nameInput');
+    var msgInput = document.getElementById('msgInput');
+    function syncPlaceholders(){
+      var l = document.documentElement.lang || 'th';
+      if(nameInput){ nameInput.placeholder = nameInput.getAttribute('data-lang-'+l) || nameInput.placeholder; }
+      if(msgInput){ msgInput.placeholder = msgInput.getAttribute('data-lang-'+l) || msgInput.placeholder; }
+    }
+    var swEl = document.querySelector('.lang-sw');
+    if(swEl){ swEl.addEventListener('click', function(){ setTimeout(syncPlaceholders, 0); }); }
+  });
+
+  // Header scroll effect
+  var header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 40){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  });
+
+  // Mobile menu toggle
+  var hamburger = document.getElementById('hamburgerBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  var overlay = document.getElementById('menuOverlay');
+  function closeMenu(){
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+  hamburger.addEventListener('click', function(){
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', closeMenu);
+  mobileMenu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
+
+  // Scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.12});
+  revealEls.forEach(function(el){ io.observe(el); });
+
+  lucide.createIcons();
+</script>
+
+<script>
+(function(){var K='site-lang',L=localStorage.getItem(K)||'th';function S(l){L=l;localStorage.setItem(K,l);document.documentElement.lang=l;document.querySelectorAll('[data-lang-th]').forEach(function(e){var t=e.getAttribute('data-lang-'+l);if(t!==null){if(/[<&]/.test(t)){e.innerHTML=t}else{e.textContent=t}}});var lb=document.querySelector('.lang-sw__label');if(lb){lb.textContent=l.toUpperCase()}}var sw=document.querySelector('.lang-sw');if(sw){sw.addEventListener('click',function(){S(L==='th'?'en':'th')});sw.style.cursor='pointer'}if(L!=='th'){S(L)}})();
+</script>
+
+</body>
+</html>
