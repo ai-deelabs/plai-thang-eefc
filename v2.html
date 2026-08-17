@@ -98,15 +98,16 @@
     cursor:pointer;
     display:flex; align-items:center; gap:5px; font-size:0.8em;
     padding:8px 10px; border-radius:999px; border:2px solid var(--primary);
-    color:var(--primary); font-weight:700; min-height:32px;
+    color:var(--primary); font-weight:700; min-height:44px;
     background:rgba(255,255,255,0.6);
   }
   .lang-sw:focus-visible{outline:2px solid currentColor; outline-offset:3px;}
   header.scrolled .lang-sw{background:var(--card);}
   .nav-right{display:flex; align-items:center; gap:14px;}
   .hamburger{
-    display:flex; flex-direction:column; gap:5px; background:none; border:none;
-    cursor:pointer; padding:10px; z-index:1100;
+    display:flex; flex-direction:column; justify-content:center; gap:5px;
+    background:none; border:none;
+    cursor:pointer; padding:10px; min-height:44px; z-index:1100;
   }
   .hamburger span{width:26px; height:3px; background:var(--primary); border-radius:3px; transition:all .3s ease;}
   .hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}

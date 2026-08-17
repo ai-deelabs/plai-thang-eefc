@@ -81,7 +81,7 @@ body{
 
 .lang{
   display:flex;align-items:center;gap:8px;
-  background:#ececeb;border-radius:999px;padding:4px;width:82px;position:relative;
+  background:#ececeb;border-radius:999px;padding:4px;width:82px;min-height:44px;position:relative;
   cursor:pointer;user-select:none;
 }
 .lang:focus-visible{outline:2px solid var(--ink); outline-offset:3px}
@@ -160,18 +160,6 @@ html[lang="en"] h1.hero-title{line-height:.9;letter-spacing:-.038em}
   width:30px;height:30px;display:grid;place-items:center;color:#16181c;
 }
 .book-head h3{font-size:19px;font-weight:500;letter-spacing:-.01em}
-.book-head .chev{margin-left:auto;color:#16181c;opacity:.85}
-.lbl{font-size:13px;color:#71747a;font-weight:400;margin-bottom:8px;display:block}
-.field{
-  background:var(--field);border-radius:11px;height:46px;
-  display:flex;align-items:center;gap:8px;padding:0 13px;
-  font-size:13.5px;color:#4b4e54;white-space:nowrap;overflow:hidden;
-}
-.field.ph{color:#9a9da3}
-.field .chev{margin-left:auto;color:#5c5f65}
-.field svg{flex:none;opacity:.75}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.mb18{margin-bottom:18px}
 .btn-dark{
   width:100%;height:50px;background:#16181c;color:#fff;border-radius:11px;
   font-size:15px;font-weight:500;margin-top:24px;
@@ -221,12 +209,6 @@ html[lang="en"] .tag{font-size:11.5px;letter-spacing:.06em;text-transform:upperc
   padding:4px 12px;font-size:11.5px;color:#fff;
   background:rgba(255,255,255,.14);backdrop-filter:blur(6px);
 }
-.heart{
-  position:absolute;top:9px;right:9px;z-index:2;
-  width:26px;height:26px;border-radius:999px;display:grid;place-items:center;
-  background:rgba(255,255,255,.2);backdrop-filter:blur(6px);color:#fff;
-}
-.heart:hover{background:rgba(255,255,255,.4)}
 .thumb b{
   position:absolute;left:14px;bottom:11px;z-index:2;
   color:#fff;font-size:15px;font-weight:400;letter-spacing:-.01em;
@@ -247,16 +229,6 @@ h2.big{
 .arw.pri:hover{background:var(--orange-d)}
 
 .quote{font-size:16.5px;line-height:1.6;color:#3f4247;font-weight:400}
-.proof{display:flex;align-items:center;gap:14px;margin-top:26px}
-.avatars{display:flex}
-.avatars img{
-  width:44px;height:44px;border-radius:999px;object-fit:cover;
-  border:2.5px solid var(--panel);margin-left:-13px;
-}
-.avatars img:first-child{margin-left:0}
-.proof span{font-size:15px;line-height:1.25;color:#3f4247;max-width:8ch}
-.stars{display:flex;gap:3px;margin-top:22px;color:var(--orange);font-size:21px}
-.rev{margin-top:9px;font-size:16px;color:#2b2e33}
 
 /* ============================ MARQUEE ============================ */
 .marquee{overflow:hidden;padding:74px 0 66px;user-select:none}
@@ -431,9 +403,30 @@ aside .btn-out{margin-top:26px}
   .hot-head{grid-template-columns:1fr;gap:24px}
   .foot-in{grid-template-columns:1fr 1fr}
 }
+/*
+  The header wants 885px for logo + four links + the toggle + both buttons, so between the
+  720px breakpoint and roughly 900px the orange CTA was being cut off - body{overflow-x:hidden}
+  hid the scrollbar rather than the problem. Dropping the "read articles" ghost button reclaims
+  the room: it repeats both a nav link and the panel's own button further down the page.
+*/
+@media (max-width:900px){
+  .logo{flex:none}
+  .nav-right .btn-ghost{display:none}
+  .nav-in{gap:18px}
+  .menu{margin-left:8px}
+  .menu a{padding:9px 13px}
+}
+/*
+  With the links tightened the header still needs 757px, so they have to go before 780 rather
+  than at the 720 the template used - between the two the orange CTA hung off the right edge.
+  The language toggle is deliberately not in here: hiding it with the links, as the template
+  did, left phones with no way to switch TH/EN at all.
+*/
+@media (max-width:780px){
+  .menu,.divider{display:none}
+}
 @media (max-width:720px){
   :root{--pad:20px}
-  .menu,.divider,.lang{display:none}
   .hero{min-height:600px}
   .thumbs{grid-template-columns:1fr}
   .explore,.marvels,.booking{grid-template-columns:1fr}
